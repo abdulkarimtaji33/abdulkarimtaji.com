@@ -27,22 +27,6 @@ class ProjectSeeder extends Seeder
                 'is_featured' => true
             ],
             [
-                'name' => 'South Travels',
-                'url' => 'https://southtravels.com',
-                'description' => 'A Dubai-based travel agency website offering UAE visa services, holiday packages, and comprehensive travel/tour services.',
-                'image' => 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80',
-                'category' => 'Travel/Tourism',
-                'is_featured' => true
-            ],
-            [
-                'name' => 'South Travels Tours',
-                'url' => 'https://tours.southtravels.com',
-                'description' => 'A tours/activities booking platform for Dubai experiences including city tours, desert safari, cruises, sightseeing, and adventure activities.',
-                'image' => 'https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3?w=800&q=80',
-                'category' => 'Travel/Tourism',
-                'is_featured' => true
-            ],
-            [
                 'name' => 'Aile Properties',
                 'url' => 'https://aileproperties.com',
                 'description' => 'A Dubai real estate agency website focused on buying/selling/renting properties including luxury and investment options with related services.',
