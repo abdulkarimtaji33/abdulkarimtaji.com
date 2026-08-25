@@ -843,15 +843,6 @@ export default {
             this.shake = Math.max(this.shake, 0.09);
         }
 
-        // Skill-name popup on every drop (base block excluded — nothing was
-        // "chosen" for it), with a perfect/combo prefix when it applies.
-        if (!b.isBase) {
-            const label = skill.label || skill.id || '';
-            let prefix = '';
-            if (isPerfect) prefix = this.combo >= 2 ? 'Perfect x' + this.combo + '! ' : 'Perfect! ';
-            try { toast(this.container, prefix + label); } catch (e) {}
-        }
-
         // landing juice: wobble + squash-stretch
         if (!this.reduceMotion) {
             this.wobbleVel += (Math.random() < 0.5 ? -1 : 1) * (isPerfect ? 0.05 : 0.1);
@@ -868,8 +859,24 @@ export default {
         this.activeBlock = null;
 
         // group milestone: banner + confetti + width restore toward base
-        if (this._isLastOfGroup(finishedGroupIndex) && this.currentIndex < this.skills.length) {
+        const finishesGroup = this._isLastOfGroup(finishedGroupIndex) && this.currentIndex < this.skills.length;
+        if (finishesGroup) {
             this._onGroupComplete(skill.group, mesh.position);
+        }
+
+        // Skill-name popup on every drop (base block excluded — nothing was
+        // "chosen" for it, and skipped when this same drop already fired the
+        // bigger "{Group} complete!" banner, so the two never collide at the
+        // same top-of-screen spot) — same banner style, with a perfect/combo
+        // prefix when it applies and a random color from the game's own
+        // accent set each time for variety.
+        if (!b.isBase && !finishesGroup) {
+            const label = skill.label || skill.id || '';
+            let prefix = '';
+            if (isPerfect) prefix = this.combo >= 2 ? 'Perfect x' + this.combo + '! ' : 'Perfect! ';
+            const bannerColors = GROUP_ORDER.map((g) => GROUP_META[g].color);
+            const randomColor = bannerColors[Math.floor(Math.random() * bannerColors.length)];
+            try { this._showBanner(prefix + label, randomColor); } catch (e) {}
         }
 
         // height milestone every 5 blocks: camera kiss + a real stat
