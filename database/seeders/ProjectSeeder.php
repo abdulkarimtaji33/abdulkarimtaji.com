@@ -54,7 +54,7 @@ class ProjectSeeder extends Seeder
                 'name' => 'Easy Campus',
                 'url' => 'https://easycampus.io',
                 'description' => 'A comprehensive learning management and school platform for institutional management and e-learning from schools to higher education.',
-                'image' => 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80',
+                'image' => 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80',
                 'category' => 'Education/LMS',
                 'is_featured' => false
             ],
