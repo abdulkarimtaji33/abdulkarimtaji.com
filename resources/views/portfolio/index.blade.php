@@ -882,7 +882,148 @@
             opacity: 1;
             transform: translateY(0);
             transition: opacity var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
+            transition-delay: var(--reveal-delay, 0ms);
         }
+
+        /* Stagger — sibling groups get an incremental delay so they cascade
+           in rather than popping together (40–100ms rhythm per skill guidance) */
+        .stats-grid .stat:nth-child(1) { --reveal-delay: 0ms; }
+        .stats-grid .stat:nth-child(2) { --reveal-delay: 80ms; }
+        .stats-grid .stat:nth-child(3) { --reveal-delay: 160ms; }
+        .stats-grid .stat:nth-child(4) { --reveal-delay: 240ms; }
+
+        .skills-grid .skill-card:nth-child(1) { --reveal-delay: 0ms; }
+        .skills-grid .skill-card:nth-child(2) { --reveal-delay: 70ms; }
+        .skills-grid .skill-card:nth-child(3) { --reveal-delay: 140ms; }
+        .skills-grid .skill-card:nth-child(4) { --reveal-delay: 210ms; }
+        .skills-grid .skill-card:nth-child(5) { --reveal-delay: 280ms; }
+        .skills-grid .skill-card:nth-child(6) { --reveal-delay: 350ms; }
+
+        .project-row .project-card:nth-child(1) { --reveal-delay: 0ms; }
+        .project-row .project-card:nth-child(2) { --reveal-delay: 90ms; }
+        .project-row .project-card:nth-child(3) { --reveal-delay: 180ms; }
+        .project-row-secondary .project-card:nth-child(1) { --reveal-delay: 0ms; }
+        .project-row-secondary .project-card:nth-child(2) { --reveal-delay: 70ms; }
+        .project-row-secondary .project-card:nth-child(3) { --reveal-delay: 140ms; }
+        .project-row-secondary .project-card:nth-child(4) { --reveal-delay: 210ms; }
+        .project-row-secondary .project-card:nth-child(5) { --reveal-delay: 280ms; }
+        .project-row-secondary .project-card:nth-child(6) { --reveal-delay: 350ms; }
+
+        .timeline .timeline-item:nth-child(1) { --reveal-delay: 0ms; }
+        .timeline .timeline-item:nth-child(2) { --reveal-delay: 60ms; }
+        .timeline .timeline-item:nth-child(3) { --reveal-delay: 120ms; }
+        .timeline .timeline-item:nth-child(4) { --reveal-delay: 180ms; }
+        .timeline .timeline-item:nth-child(5) { --reveal-delay: 240ms; }
+
+        /* ============================================================
+           16. HERO ENTRANCE + AMBIENT MOTION
+           ============================================================ */
+        @media (prefers-reduced-motion: no-preference) {
+            .hero-copy .eyebrow,
+            .hero-copy h1,
+            .hero-lead,
+            .hero-actions,
+            .hero-meta {
+                opacity: 0;
+                animation: hero-in var(--duration-slow) var(--ease-out) forwards;
+            }
+            .hero-copy .eyebrow  { animation-delay: 60ms; }
+            .hero-copy h1        { animation-delay: 140ms; }
+            .hero-lead            { animation-delay: 260ms; }
+            .hero-actions          { animation-delay: 360ms; }
+            .hero-meta               { animation-delay: 440ms; }
+
+            .hero-portrait-wrap {
+                opacity: 0;
+                animation: hero-in-scale 700ms var(--ease-out) forwards;
+                animation-delay: 200ms;
+            }
+
+            .hero-badge {
+                animation: badge-float 5s ease-in-out infinite;
+                animation-delay: 1s; /* let the entrance settle first */
+            }
+
+            .hero-bg {
+                animation: bg-drift 22s ease-in-out infinite alternate;
+            }
+        }
+
+        @keyframes hero-in {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes hero-in-scale {
+            from { opacity: 0; transform: scale(0.94) translateY(12px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes badge-float {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-8px); }
+        }
+        @keyframes bg-drift {
+            from { transform: scale(1) translate(0, 0); }
+            to   { transform: scale(1.08) translate(-2%, 2%); }
+        }
+
+        /* ============================================================
+           17. MICRO-INTERACTIONS
+           ============================================================ */
+        .skill-card-icon,
+        .hero-badge-icon {
+            transition: transform var(--duration-base) var(--ease-out), background-color var(--duration-base) var(--ease-out);
+        }
+        .skill-card:hover .skill-card-icon { transform: rotate(-8deg) scale(1.08); }
+
+        .social-link,
+        .theme-toggle {
+            transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+        }
+        .social-link:active { transform: scale(0.92); }
+        .theme-toggle:active { transform: scale(0.9) rotate(-10deg); }
+
+        .timeline-dot {
+            transition: transform var(--duration-base) var(--ease-out), border-color var(--duration-base) var(--ease-out), background-color var(--duration-base) var(--ease-out);
+        }
+        .timeline-item:hover .timeline-dot { transform: scale(1.15); }
+
+        .timeline-item.current .timeline-dot {
+            animation: dot-pulse 2.2s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .timeline-item.current .timeline-dot { animation: none; }
+        }
+        @keyframes dot-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--color-action) 35%, transparent); }
+            50%      { box-shadow: 0 0 0 6px color-mix(in oklch, var(--color-action) 0%, transparent); }
+        }
+
+        .project-card { will-change: transform; }
+        .project-badge { transition: transform var(--duration-base) var(--ease-out); }
+        .project-card:hover .project-badge { transform: scale(1.06); }
+
+        .nav-brand img { transition: transform var(--duration-base) var(--ease-out); }
+        .nav-brand:hover img { transform: rotate(-6deg) scale(1.05); }
+
+        /* Button shine sweep on hover */
+        .btn-primary { position: relative; overflow: hidden; }
+        .btn-primary::before {
+            content: '';
+            position: absolute; top: 0; left: -60%;
+            width: 40%; height: 100%;
+            background: linear-gradient(120deg, transparent, color-mix(in oklch, white 45%, transparent), transparent);
+            transform: skewX(-20deg);
+            transition: left var(--duration-slow) var(--ease-out);
+            pointer-events: none;
+        }
+        .btn-primary:hover::before { left: 130%; }
+
+        .cta-panel {
+            transition: transform var(--duration-base) var(--ease-out);
+        }
+
+        .stat-number { transition: color var(--duration-base) var(--ease-out); }
+        .stat:hover .stat-number { color: var(--color-action); }
     </style>
 </head>
 <body>
