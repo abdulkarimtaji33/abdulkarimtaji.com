@@ -640,7 +640,7 @@ export default {
             const orbit = {
                 radius: topR + 0.9 + (k % 2) * 0.35,
                 angle: (k / Math.max(1, count)) * Math.PI * 2 + rand(),
-                speed: (this.reduceMotion ? 0 : 0.25 + rand() * 0.15) * (k % 2 === 0 ? 1 : -1),
+                speed: (this.reduceMotion ? 0 : 0.05 + rand() * 0.035) * (k % 2 === 0 ? 1 : -1),
                 height: 0.55 + rand() * 0.5,
                 bobPhase: rand() * Math.PI * 2,
             };

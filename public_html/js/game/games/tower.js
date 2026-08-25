@@ -22,21 +22,26 @@ import { infoCard, toast } from '../core/ui.js';
 
 const GROUP_ORDER = ['db', 'backend', 'frontend', 'devops', 'craft', 'leadership'];
 
+// Same family as Career Constellation's night-sky palette (PAL in world.js) —
+// cyan / green / magenta / purple / rose / gold accents on a deep indigo
+// backdrop, so the two games read as one connected game suite.
 const GROUP_META = {
-    db:         { label: 'Databases',  color: 0x2f9de4 }, // ocean blue
-    backend:    { label: 'Backend',    color: 0x22c58b }, // emerald green
-    frontend:   { label: 'Frontend',   color: 0xff7a59 }, // coral orange
-    devops:     { label: 'DevOps',     color: 0x8f6bff }, // violet
-    craft:      { label: 'Craft',      color: 0xff4fa3 }, // hot pink / magenta
-    leadership: { label: 'Leadership', color: 0xffc93c }, // golden yellow
+    db:         { label: 'Databases',  color: 0x3fe0f0 }, // accentCyan
+    backend:    { label: 'Backend',    color: 0x5fe89a }, // accentGreen
+    frontend:   { label: 'Frontend',   color: 0xf05fd0 }, // accentMagenta
+    devops:     { label: 'DevOps',     color: 0x9d7bff }, // accentPurple
+    craft:      { label: 'Craft',      color: 0xc75b74 }, // roof rose
+    leadership: { label: 'Leadership', color: 0xffc857 }, // accentGold
 };
-const FALLBACK_GROUP = { label: 'Stack', color: 0x2f9de4 };
+const FALLBACK_GROUP = { label: 'Stack', color: 0x3fe0f0 };
 
-// Arcade-sunset sky: warm peach plaza level -> twilight lavender at the top.
-const SKY_LOW = new THREE.Color(0xffd9a0);
-const SKY_HIGH = new THREE.Color(0x7a68c8);
-const FOG_LOW = new THREE.Color(0xffcf9e);
-const FOG_HIGH = new THREE.Color(0x8878d0);
+// Deep indigo night sky, matching Career Constellation's bg/fog exactly —
+// a faint lift toward nebula-purple near the top instead of a hard flat
+// color, so climbing the tower still feels like it's going somewhere.
+const SKY_LOW = new THREE.Color(0x12123f);
+const SKY_HIGH = new THREE.Color(0x2a2160);
+const FOG_LOW = new THREE.Color(0x12123f);
+const FOG_HIGH = new THREE.Color(0x241c50);
 
 const BEST_KEY = 'game.tower.best';
 
@@ -286,17 +291,18 @@ export default {
         this.envGroup = new THREE.Group();
         scene.add(this.envGroup);
 
-        // warm two-tone plaza disc (~7 units across) instead of a huge plane
+        // Night-diorama plaza (~7 units across) in the same dusky-rock /
+        // fresh-green palette Career Constellation uses for its islands.
         const plazaTop = new THREE.Mesh(
             new THREE.CylinderGeometry(PLAZA_RADIUS, PLAZA_RADIUS, 0.24, 40),
-            new THREE.MeshStandardMaterial({ color: 0xffb86b, roughness: 0.95, flatShading: true })
+            new THREE.MeshStandardMaterial({ color: 0x4a3b55, roughness: 0.95, flatShading: true })
         );
         plazaTop.position.y = -0.12;
         this.envGroup.add(plazaTop);
 
         const plazaRim = new THREE.Mesh(
             new THREE.CylinderGeometry(PLAZA_RADIUS + 0.28, PLAZA_RADIUS + 0.42, 0.16, 40),
-            new THREE.MeshStandardMaterial({ color: 0xe07a4f, roughness: 0.95, flatShading: true })
+            new THREE.MeshStandardMaterial({ color: 0x352a40, roughness: 0.95, flatShading: true })
         );
         plazaRim.position.y = -0.28;
         this.envGroup.add(plazaRim);
@@ -304,7 +310,7 @@ export default {
         // inner accent ring where the tower stands
         const pad = new THREE.Mesh(
             new THREE.CylinderGeometry(1.25, 1.32, 0.05, 28),
-            new THREE.MeshStandardMaterial({ color: 0xffd0a0, roughness: 0.9, flatShading: true })
+            new THREE.MeshStandardMaterial({ color: 0x4fca6e, roughness: 0.9, flatShading: true })
         );
         pad.position.y = 0.025;
         this.envGroup.add(pad);
@@ -317,13 +323,13 @@ export default {
             const tree = new THREE.Group();
             const trunk = new THREE.Mesh(
                 new THREE.CylinderGeometry(0.05, 0.07, 0.26, 6),
-                new THREE.MeshStandardMaterial({ color: 0x9c5b38, roughness: 1, flatShading: true })
+                new THREE.MeshStandardMaterial({ color: 0x6e4a37, roughness: 1, flatShading: true })
             );
             trunk.position.y = 0.13;
             const canopy = new THREE.Mesh(
                 new THREE.ConeGeometry(0.24 + (i % 3) * 0.05, 0.5 + (i % 2) * 0.16, 7),
                 new THREE.MeshStandardMaterial({
-                    color: i % 2 ? 0x2fae74 : 0x53c98b, roughness: 0.95, flatShading: true,
+                    color: i % 2 ? 0x2a9a72 : 0x35b364, roughness: 0.95, flatShading: true,
                 })
             );
             canopy.position.y = 0.26 + (0.5 + (i % 2) * 0.16) / 2;
@@ -338,7 +344,7 @@ export default {
         rockSpots.forEach(([x, z], i) => {
             const rock = new THREE.Mesh(
                 new THREE.IcosahedronGeometry(0.12 + (i % 2) * 0.07, 0),
-                new THREE.MeshStandardMaterial({ color: 0xd8a37c, roughness: 1, flatShading: true })
+                new THREE.MeshStandardMaterial({ color: 0x8d86a8, roughness: 1, flatShading: true })
             );
             rock.position.set(x, 0.07, z);
             rock.rotation.set(i, i * 2, 0);
@@ -422,38 +428,54 @@ export default {
         if (this.labelTextureCache.has(key)) return this.labelTextureCache.get(key);
 
         const meta = groupMeta(skill.group);
+        // 2x resolution (512x256) + anisotropic filtering below — as the
+        // tower narrows, upper blocks physically shrink, so the same fixed
+        // texture gets squeezed onto a small face viewed at an angle; without
+        // both of these the text goes soft/blurry exactly on those blocks.
+        const W = 512, H = 256;
         const canvas = document.createElement('canvas');
-        canvas.width = 256;
-        canvas.height = 128;
+        canvas.width = W;
+        canvas.height = H;
         const c = canvas.getContext('2d');
 
-        // block's own group color background with a subtle vertical shade
-        const grad = c.createLinearGradient(0, 0, 0, 128);
-        grad.addColorStop(0, hexCss(shade(meta.color, 0.18)));
-        grad.addColorStop(1, hexCss(meta.color));
-        c.fillStyle = grad;
-        c.fillRect(0, 0, 256, 128);
+        // Always a near-black panel behind the text — a light group color
+        // (e.g. leadership gold) put white text on a BRIGHT background and
+        // the text nearly vanished. A dark panel guarantees strong contrast
+        // no matter which group color the block belongs to; the group color
+        // still shows as a bold accent stripe across the top for identity.
+        c.fillStyle = '#141021';
+        c.fillRect(0, 0, W, H);
+        c.fillStyle = hexCss(meta.color);
+        c.fillRect(0, 0, W, 28);
 
         const label = skill.label || skill.name || String(skill.id || '');
         c.textAlign = 'center';
         c.textBaseline = 'middle';
-        let fontSize = 34;
+        let fontSize = 72;
         c.font = '800 ' + fontSize + 'px Inter, system-ui, sans-serif';
-        const maxWidth = 256 - 30;
-        while (c.measureText(label).width > maxWidth && fontSize > 14) {
-            fontSize -= 2;
+        const maxWidth = W - 56;
+        while (c.measureText(label).width > maxWidth && fontSize > 28) {
+            fontSize -= 4;
             c.font = '800 ' + fontSize + 'px Inter, system-ui, sans-serif';
         }
-        // dark outline then bold white fill
+        // subtle dark outline (crisps edges on small textures) then bright
+        // white fill — on the guaranteed-dark panel this reads clearly.
         c.lineJoin = 'round';
-        c.strokeStyle = 'rgba(20,8,40,0.85)';
-        c.lineWidth = Math.max(4, fontSize * 0.18);
-        c.strokeText(label, 128, 64, maxWidth);
+        c.strokeStyle = 'rgba(0,0,0,0.6)';
+        c.lineWidth = Math.max(6, fontSize * 0.1);
+        c.strokeText(label, W / 2, H / 2 + 16, maxWidth);
         c.fillStyle = '#ffffff';
-        c.fillText(label, 128, 64, maxWidth);
+        c.fillText(label, W / 2, H / 2 + 16, maxWidth);
 
         const texture = new THREE.CanvasTexture(canvas);
         texture.colorSpace = THREE.SRGBColorSpace;
+        // Anisotropic filtering is what actually fixes blur on a texture
+        // viewed at a shallow/oblique angle (exactly how block faces are
+        // seen from this camera) — mipmaps alone don't correct for that.
+        const maxAniso = this.engine && this.engine.renderer
+            ? this.engine.renderer.capabilities.getMaxAnisotropy() : 1;
+        texture.anisotropy = maxAniso;
+        texture.needsUpdate = true;
         this.labelTextureCache.set(key, texture);
         return texture;
     },
@@ -523,15 +545,12 @@ export default {
         const meta = groupMeta(skill.group);
         const y = this.height * BLOCK_HEIGHT + BLOCK_HEIGHT / 2;
 
+        // MeshBasicMaterial is deliberate: it's unlit, so the block's color
+        // renders exactly as authored regardless of light angle — no muddy
+        // shading. Combo "glow" is done by lerping .color toward white below.
         const geo = new THREE.BoxGeometry(this.footprint.x, BLOCK_HEIGHT, this.footprint.z);
-        const mat = new THREE.MeshStandardMaterial({
-            color: shade(meta.color, 0.22),      // brighter than placed shade
-            emissive: new THREE.Color(meta.color),
-            emissiveIntensity: 0.22,
-            roughness: 0.75,
-            metalness: 0,
-            flatShading: true,
-        });
+        const mat = new THREE.MeshBasicMaterial({ color: shade(meta.color, 0.22) });
+        mat.userData.baseHex = shade(meta.color, 0.22);
         const mesh = new THREE.Mesh(geo, mat);
         mesh.position.set(0, y, 0);
         this.towerGroup.add(mesh);
@@ -560,8 +579,11 @@ export default {
 
     _applyComboGlow() {
         if (!this.activeBlock) return;
-        const glow = Math.min(0.22 + this.combo * 0.16, 0.85);
-        this.activeBlock.mat.emissiveIntensity = glow;
+        // Combo "glow" on an unlit material = lerp the color toward white
+        // instead of an emissive channel MeshBasicMaterial doesn't have.
+        const t = Math.min(this.combo * 0.12, 0.55);
+        const base = new THREE.Color(this.activeBlock.mat.userData.baseHex);
+        this.activeBlock.mat.color.copy(base).lerp(new THREE.Color(0xffffff), t);
         this.activeBlock.edges.material.opacity = Math.min(0.9 + this.combo * 0.02, 1);
     },
 
@@ -630,7 +652,9 @@ export default {
         this.skyColor.lerpColors(SKY_LOW, SKY_HIGH, t);
         this.fogColor.lerpColors(FOG_LOW, FOG_HIGH, t);
         this.engine.scene.fog.color.copy(this.fogColor);
-        const starTarget = Math.max(0, (t - 0.55) / 0.45) * 0.9;
+        // Night sky from the ground up now (matching Career Constellation),
+        // so stars are visible from the start and simply intensify with height.
+        const starTarget = 0.35 + t * 0.55;
         this.starMat.opacity += (starTarget - this.starMat.opacity) * Math.min(1, dt * 2);
         this.stars.position.y = this.camHeight * 0.6;
     },
@@ -814,14 +838,18 @@ export default {
             this.bestCombo = Math.max(this.bestCombo, this.combo);
             this.score += 2 + Math.max(0, this.combo - 1); // perfect + combo bonus
             this._spawnBurst(mesh.position, [meta.color, shade(meta.color, 0.4), 0xffffff], 10, 0.6);
-            if (this.combo >= 2) {
-                try { toast(this.container, 'Perfect x' + this.combo + '!'); } catch (e) {}
-            } else {
-                try { toast(this.container, 'Perfect!'); } catch (e) {}
-            }
         } else if (!b.isBase) {
             this.combo = 0;
             this.shake = Math.max(this.shake, 0.09);
+        }
+
+        // Skill-name popup on every drop (base block excluded — nothing was
+        // "chosen" for it), with a perfect/combo prefix when it applies.
+        if (!b.isBase) {
+            const label = skill.label || skill.id || '';
+            let prefix = '';
+            if (isPerfect) prefix = this.combo >= 2 ? 'Perfect x' + this.combo + '! ' : 'Perfect! ';
+            try { toast(this.container, prefix + label); } catch (e) {}
         }
 
         // landing juice: wobble + squash-stretch
@@ -901,25 +929,20 @@ export default {
         // placed material set: deeper group shade + label on the camera-facing
         // +z face. BoxGeometry material order: [+x, -x, +y, -y, +z, -z] and the
         // camera lives on the +x/+z side, so index 4 faces the viewer.
-        const bodyMat = new THREE.MeshStandardMaterial({
-            color: shade(meta.color, -0.18),
-            roughness: 0.85,
-            metalness: 0,
-            flatShading: true,
-        });
-        const topMat = new THREE.MeshStandardMaterial({
-            color: shade(meta.color, 0.1),
-            roughness: 0.85,
-            metalness: 0,
-            flatShading: true,
-        });
-        const labelMat = new THREE.MeshStandardMaterial({
+        // MeshBasicMaterial (unlit) throughout — colors and label text render
+        // at full authored brightness regardless of the light rig, instead of
+        // going muddy/dull under MeshStandardMaterial's lighting response.
+        const bodyHex = shade(meta.color, -0.18);
+        const topHex = shade(meta.color, 0.1);
+        const bodyMat = new THREE.MeshBasicMaterial({ color: bodyHex });
+        bodyMat.userData.baseHex = bodyHex;
+        const topMat = new THREE.MeshBasicMaterial({ color: topHex });
+        topMat.userData.baseHex = topHex;
+        const labelMat = new THREE.MeshBasicMaterial({
             color: 0xffffff,
             map: this._getLabelTexture(skill),
-            roughness: 0.85,
-            metalness: 0,
-            flatShading: true,
         });
+        labelMat.userData.baseHex = 0xffffff;
 
         if (Array.isArray(mesh.material)) mesh.material.forEach((m) => m.dispose());
         else mesh.material.dispose();
@@ -930,14 +953,17 @@ export default {
         if (isPerfect) this._flashPerfect(mesh, meta.color);
     },
 
-    _flashPerfect(mesh, colorHex) {
+    _flashPerfect(mesh) {
+        // Unlit-material flash: lerp each face's .color toward white and
+        // back, using the color it was actually painted with as the base
+        // (not a shared emissive channel MeshBasicMaterial doesn't have).
         const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-        materials.forEach((m) => { if (m.emissive) m.emissive.setHex(colorHex); });
+        const bases = materials.map((m) => new THREE.Color(m.userData.baseHex != null ? m.userData.baseHex : m.color.getHex()));
         this._addAnim(0.45, (k) => {
-            const intensity = 0.8 * (1 - easeOutCubic(k));
-            materials.forEach((m) => { if (m.emissive) m.emissiveIntensity = intensity; });
+            const t = 0.85 * (1 - easeOutCubic(k));
+            materials.forEach((m, i) => { m.color.copy(bases[i]).lerp(new THREE.Color(0xffffff), t); });
         }, () => {
-            materials.forEach((m) => { if (m.emissive) m.emissiveIntensity = 0; });
+            materials.forEach((m, i) => { m.color.copy(bases[i]); });
         });
     },
 

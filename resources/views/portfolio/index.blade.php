@@ -1025,6 +1025,8 @@
         .stat-number { transition: color var(--duration-base) var(--ease-out); }
         .stat:hover .stat-number { color: var(--color-action); }
     </style>
+
+    @include('portfolio._game-styles')
 </head>
 <body>
     <a href="#main" class="skip-link">Skip to main content</a>
@@ -1258,6 +1260,21 @@
         </section>
 
         <!-- ============================================================
+             PLAY — Stack the Stack
+             ============================================================ -->
+        <section id="play" class="block">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="eyebrow">Play</span>
+                    <h2>Stack the stack</h2>
+                    <p>The same career, as a game. Stack the entire tech stack block by block, chase perfects, and pick up every skill along the way.</p>
+                </div>
+
+                @include('portfolio._game-section', ['gameId' => 'tower'])
+            </div>
+        </section>
+
+        <!-- ============================================================
              PROJECTS
              ============================================================ -->
         <section id="projects" class="block">
@@ -1403,6 +1420,21 @@
                         </div>
                     </li>
                 </ol>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             EXPLORE — Career Constellation
+             ============================================================ -->
+        <section id="explore" class="block">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="eyebrow">Explore</span>
+                    <h2>Career constellation</h2>
+                    <p>Every job, skill and project as a night sky of floating islands. Drag to orbit, tap anything to open it.</p>
+                </div>
+
+                @include('portfolio._game-section', ['gameId' => 'world'])
             </div>
         </section>
 
@@ -1609,6 +1641,24 @@
                 counters.forEach(function (el) { observer.observe(el); });
             }
         })();
+    </script>
+
+    @include('portfolio._game-data')
+
+    <script type="importmap">
+    { "imports": { "three": "{{ asset('js/vendor/three.module.min.js') }}" } }
+    </script>
+
+    <script type="module">
+        import { mountGame, parseGameData } from '{{ asset("js/game/main.js") }}';
+
+        var data = parseGameData();
+
+        var towerFrame = document.getElementById('game-frame-tower');
+        if (towerFrame) { mountGame(towerFrame, 'tower', data); }
+
+        var worldFrame = document.getElementById('game-frame-world');
+        if (worldFrame) { mountGame(worldFrame, 'world', data); }
     </script>
 </body>
 </html>
