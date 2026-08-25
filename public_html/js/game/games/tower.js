@@ -239,6 +239,9 @@ export default {
     _showBanner(text, colorHex) {
         const el = document.createElement('div');
         el.className = 'tower-banner';
+        // Stack banners vertically instead of one replacing/overlapping the
+        // other — the first active one sits "up", the next "down" below it.
+        el.style.top = (14 + this.banners.length * 13) + '%';
         el.style.background = 'linear-gradient(135deg,' + hexCss(colorHex) + ',' + hexCss(shade(colorHex, 0.3)) + ')';
         el.textContent = text;
         this.container.appendChild(el);
@@ -858,25 +861,25 @@ export default {
         this.currentIndex += 1;
         this.activeBlock = null;
 
-        // group milestone: banner + confetti + width restore toward base
-        const finishesGroup = this._isLastOfGroup(finishedGroupIndex) && this.currentIndex < this.skills.length;
-        if (finishesGroup) {
-            this._onGroupComplete(skill.group, mesh.position);
-        }
-
         // Skill-name popup on every drop (base block excluded — nothing was
-        // "chosen" for it, and skipped when this same drop already fired the
-        // bigger "{Group} complete!" banner, so the two never collide at the
-        // same top-of-screen spot) — same banner style, with a perfect/combo
+        // "chosen" for it) — fires FIRST so it always claims the top "up"
+        // slot, since the skill itself matters more than the group label.
+        // Same banner style as "{Group} complete!", with a perfect/combo
         // prefix when it applies and a random color from the game's own
         // accent set each time for variety.
-        if (!b.isBase && !finishesGroup) {
+        if (!b.isBase) {
             const label = skill.label || skill.id || '';
             let prefix = '';
             if (isPerfect) prefix = this.combo >= 2 ? 'Perfect x' + this.combo + '! ' : 'Perfect! ';
             const bannerColors = GROUP_ORDER.map((g) => GROUP_META[g].color);
             const randomColor = bannerColors[Math.floor(Math.random() * bannerColors.length)];
             try { this._showBanner(prefix + label, randomColor); } catch (e) {}
+        }
+
+        // group milestone: banner (stacks "down" below the skill banner
+        // above, if that also fired) + confetti + width restore toward base
+        if (this._isLastOfGroup(finishedGroupIndex) && this.currentIndex < this.skills.length) {
+            this._onGroupComplete(skill.group, mesh.position);
         }
 
         // height milestone every 5 blocks: camera kiss + a real stat
