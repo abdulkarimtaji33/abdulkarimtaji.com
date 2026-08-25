@@ -27,8 +27,11 @@
     <meta property="og:title" content="Abdul Karim Taji — Senior Full Stack Developer">
     <meta property="og:description" content="Senior Full Stack Developer with 7+ years building AI-powered platforms and scalable web systems. Node.js, React, Laravel, TypeScript.">
     <meta property="og:image" content="{{ asset('images/profile.jpg') }}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:image:secure_url" content="{{ asset('images/profile.jpg') }}">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1254">
+    <meta property="og:image:height" content="1254">
+    <meta property="og:image:alt" content="Abdul Karim Taji — Senior Full Stack Developer">
     <meta property="og:site_name" content="Abdul Karim Taji Portfolio">
     <meta property="og:locale" content="en_US">
 
@@ -38,6 +41,7 @@
     <meta property="twitter:title" content="Abdul Karim Taji — Senior Full Stack Developer">
     <meta property="twitter:description" content="Senior Full Stack Developer with 7+ years building AI-powered platforms and scalable web systems. Based in Dubai, UAE.">
     <meta property="twitter:image" content="{{ asset('images/profile.jpg') }}">
+    <meta property="twitter:image:alt" content="Abdul Karim Taji — Senior Full Stack Developer">
     <meta property="twitter:creator" content="@abdulkarimtaji">
     <meta property="twitter:site" content="@abdulkarimtaji">
 
