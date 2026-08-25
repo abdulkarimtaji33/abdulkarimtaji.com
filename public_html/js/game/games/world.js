@@ -150,17 +150,27 @@ export default {
         this._buildShips();
         this._initShootingStars();
 
-        this.camState = { radius: 14, theta: Math.PI * 0.3, phi: 1.08 };
+        // A narrow/portrait canvas sees far less horizontally at the same
+        // distance, so start further back there or the outer islands sit
+        // outside the frame with no hint they exist.
+        const cw = this._panelContainer().clientWidth || window.innerWidth;
+        this.defaultRadius = cw < 640 ? 19 : 14;
+        this.camState = { radius: this.defaultRadius, theta: Math.PI * 0.3, phi: 1.08 };
         this._applyCamera();
 
         this._injectStyles();
         this._buildPanel();
+        this._buildControls();
         this._setupInput();
         this._setupKeyboard();
         this._buildA11yButtons();
 
-        this.hud.setTopLeft('Career Constellation');
-        this.hud.setBottom('drag to explore · tap anything');
+        // Short label on narrow canvases — the full title wrapped to two
+        // lines and ate a chunk of an already-small viewport.
+        this.hud.setTopLeft(cw < 640 ? 'Constellation' : 'Career Constellation');
+        // No bottom hint — the on-screen control bar lives there now and
+        // explains navigation better than a line of text did.
+        this.hud.setBottom('');
         this._updateHud();
     },
 
@@ -181,6 +191,9 @@ export default {
         this.disposers = [];
 
         if (this.panelEl && this.panelEl.parentNode) this.panelEl.parentNode.removeChild(this.panelEl);
+        if (this.ctrlEl && this.ctrlEl.parentNode) this.ctrlEl.parentNode.removeChild(this.ctrlEl);
+        this.ctrlEl = null;
+        this.ctrlLabel = null;
         if (this.styleEl && this.styleEl.parentNode) this.styleEl.parentNode.removeChild(this.styleEl);
         if (this.a11yList && this.a11yList.parentNode) this.a11yList.parentNode.removeChild(this.a11yList);
         this.panelEl = null;
@@ -628,7 +641,14 @@ export default {
     },
 
     _buildCrystalsForIsland(islandEntry, rand, topR) {
-        const skillIds = Array.isArray(islandEntry.company.skills) ? islandEntry.company.skills : [];
+        // Every company now carries the FULL skill list, so using it directly
+        // spawned the same 30 crystals around all 5 islands = 150 objects, an
+        // unnavigable cloud of diamonds. Instead deal the skills out evenly so
+        // each one appears exactly once in the whole scene (~6 per island).
+        const all = Array.isArray(islandEntry.company.skills) ? islandEntry.company.skills : [];
+        const islands = Math.max(1, this.companies.length);
+        const idx = islandEntry.index;
+        const skillIds = all.filter((_, i) => i % islands === idx);
         const count = skillIds.length;
         skillIds.forEach((sid, k) => {
             const skill = this.skillIndex.get(sid) || { id: sid, label: sid, fact: '' };
@@ -830,7 +850,8 @@ export default {
             'box-shadow:0 10px 40px rgba(0,0,0,.45);font-size:.9rem;line-height:1.5;' +
             'transform:translateX(calc(100% + 24px));transition:transform .3s ease,opacity .3s ease;opacity:0;pointer-events:none;}' +
             '.cc-panel.cc-panel--open{transform:translateX(0);opacity:1;pointer-events:auto;}' +
-            '.cc-panel--bottom{top:auto;left:12px;right:12px;bottom:12px;width:auto;max-height:45%;' +
+            // bottom:62px clears the on-screen control bar docked below it
+            '.cc-panel--bottom{top:auto;left:12px;right:12px;bottom:62px;width:auto;max-height:42%;' +
             'transform:translateY(calc(100% + 24px));}' +
             '.cc-panel--bottom.cc-panel--open{transform:translateY(0);}' +
             '.cc-panel-close{position:absolute;top:10px;right:10px;width:30px;height:30px;border:0;border-radius:50%;' +
@@ -847,9 +868,99 @@ export default {
             '.cc-panel-link{display:inline-block;padding:7px 14px;border-radius:999px;font-size:.8rem;text-decoration:none;' +
             'background:linear-gradient(135deg,' + hexCss(PAL.accentCyan) + ',' + hexCss(PAL.accentPurple) + ');color:#0f1035;font-weight:600;}' +
             '.cc-panel-banner{margin-top:12px;padding:9px 12px;border-radius:10px;font-size:.78rem;' +
-            'background:rgba(255,200,87,.14);border:1px solid rgba(255,200,87,.5);color:' + hexCss(PAL.beacon) + ';}';
+            'background:rgba(255,200,87,.14);border:1px solid rgba(255,200,87,.5);color:' + hexCss(PAL.beacon) + ';}' +
+            // On-screen navigation — free-orbit alone was too hard to steer,
+            // especially on touch. These give a guaranteed way to reach every
+            // island without having to find it by dragging.
+            '.cc-ctrl{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);' +
+            'display:flex;align-items:center;gap:6px;z-index:25;' +
+            'background:rgba(15,16,53,.86);border:1px solid rgba(159,143,224,.35);' +
+            'border-radius:999px;padding:6px 8px;backdrop-filter:blur(8px);' +
+            'box-shadow:0 8px 24px rgba(8,6,26,.45);}' +
+            '.cc-ctrl button{min-width:38px;height:38px;border-radius:999px;border:0;cursor:pointer;' +
+            'background:rgba(255,255,255,.10);color:#f0f2ff;font-size:1rem;line-height:1;' +
+            'display:flex;align-items:center;justify-content:center;padding:0 10px;' +
+            'font-family:inherit;font-weight:700;transition:background .18s ease,transform .18s ease;}' +
+            '.cc-ctrl button:hover{background:rgba(255,255,255,.2);}' +
+            '.cc-ctrl button:active{transform:scale(.92);}' +
+            '.cc-ctrl button:focus-visible{outline:2px solid ' + hexCss(PAL.accentCyan) + ';outline-offset:2px;}' +
+            '.cc-ctrl-label{min-width:104px;text-align:center;font-size:.72rem;font-weight:700;' +
+            'color:#f0f2ff;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}' +
+            '.cc-ctrl-sep{width:1px;height:22px;background:rgba(159,143,224,.35);margin:0 2px;}' +
+            '@media (max-width:640px){.cc-ctrl{gap:4px;padding:5px 6px;bottom:10px;}' +
+            '.cc-ctrl button{min-width:34px;height:34px;font-size:.92rem;padding:0 8px;}' +
+            '.cc-ctrl-label{min-width:74px;font-size:.66rem;}}';
         document.head.appendChild(style);
         this.styleEl = style;
+    },
+
+    /**
+     * On-screen controls: step through islands, zoom, reset. Pointer events
+     * are stopped from reaching the canvas so tapping a button never also
+     * starts an orbit-drag underneath it.
+     */
+    _buildControls() {
+        const bar = document.createElement('div');
+        bar.className = 'cc-ctrl';
+
+        const mk = (html, label, onClick) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.innerHTML = html;
+            btn.setAttribute('aria-label', label);
+            btn.title = label;
+            btn.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+            btn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); onClick(); });
+            return btn;
+        };
+
+        const sep = () => {
+            const s = document.createElement('span');
+            s.className = 'cc-ctrl-sep';
+            return s;
+        };
+
+        this.ctrlLabel = document.createElement('span');
+        this.ctrlLabel.className = 'cc-ctrl-label';
+        this.ctrlLabel.textContent = 'Explore';
+
+        bar.appendChild(mk('&#9664;', 'Previous island', () => this._stepIsland(-1)));
+        bar.appendChild(this.ctrlLabel);
+        bar.appendChild(mk('&#9654;', 'Next island', () => this._stepIsland(1)));
+        bar.appendChild(sep());
+        bar.appendChild(mk('&minus;', 'Zoom out', () => this._zoomBy(1.6)));
+        bar.appendChild(mk('+', 'Zoom in', () => this._zoomBy(-1.6)));
+        bar.appendChild(sep());
+        bar.appendChild(mk('&#8635;', 'Reset view', () => this._resetView()));
+
+        this._panelContainer().appendChild(bar);
+        this.ctrlEl = bar;
+    },
+
+    /** Step the camera to the next/previous island and open its details. */
+    _stepIsland(dir) {
+        const list = this.islandEntries || [];
+        if (!list.length) return;
+        const cur = typeof this._islandCursor === 'number' ? this._islandCursor : -1;
+        this._islandCursor = (cur + dir + list.length) % list.length;
+        const entry = list[this._islandCursor];
+        if (this.ctrlLabel) this.ctrlLabel.textContent = entry.label || 'Island';
+        this._selectEntry(entry);
+    },
+
+    _zoomBy(delta) {
+        this.camState.radius = Math.max(7, Math.min(26, this.camState.radius + delta));
+    },
+
+    /** Pull back to the whole-constellation overview and close the panel. */
+    _resetView() {
+        this._cameraTween = null;
+        this.camState.radius = this.defaultRadius || 14;
+        this.camState.theta = Math.PI * 0.3;
+        this.camState.phi = 1.08;
+        this._islandCursor = -1;
+        if (this.ctrlLabel) this.ctrlLabel.textContent = 'Explore';
+        this._closePanel();
     },
 
     _buildPanel() {
@@ -1030,7 +1141,7 @@ export default {
                 return;
             }
             if (e.key === '-' || e.key === '_') {
-                this.camState.radius = Math.min(22, this.camState.radius + 0.9);
+                this.camState.radius = Math.min(26, this.camState.radius + 0.9);
             }
         };
         document.addEventListener('keydown', this._onKeyDown);
@@ -1274,7 +1385,7 @@ export default {
         // --- zoom ---
         const wheel = this.input.consumeWheel();
         if (wheel !== 0) {
-            this.camState.radius = Math.max(7, Math.min(22, this.camState.radius + wheel * 0.004));
+            this.camState.radius = Math.max(7, Math.min(26, this.camState.radius + wheel * 0.004));
             this.cameraTween = null;
         }
 
@@ -1370,7 +1481,7 @@ export default {
                 // Sync spherical state with where the tween left the camera so
                 // the next drag continues smoothly from here.
                 const rel = this.engine.camera.position.clone().sub(TARGET);
-                this.camState.radius = Math.max(7, Math.min(22, rel.length()));
+                this.camState.radius = Math.max(7, Math.min(26, rel.length()));
                 this.camState.theta = Math.atan2(rel.z, rel.x);
                 this.camState.phi = Math.acos(Math.max(-1, Math.min(1, rel.y / rel.length())));
                 this._tweenHold = true; // keep looking at the object until user moves
