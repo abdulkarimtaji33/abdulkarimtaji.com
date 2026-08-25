@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/HD2ykMXR/Whats-App-Image-2026-02-11-at-2-32-41-PM.jpg">
-    <link rel="shortcut icon" href="https://i.ibb.co/HD2ykMXR/Whats-App-Image-2026-02-11-at-2-32-41-PM.jpg">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://i.ibb.co/HD2ykMXR/Whats-App-Image-2026-02-11-at-2-32-41-PM.jpg">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/HD2ykMXR/Whats-App-Image-2026-02-11-at-2-32-41-PM.jpg">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://i.ibb.co/HD2ykMXR/Whats-App-Image-2026-02-11-at-2-32-41-PM.jpg">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/profile.jpg') }}">
+    <link rel="shortcut icon" href="{{ asset('images/profile.jpg') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/profile.jpg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/profile.jpg') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/profile.jpg') }}">
 
     <!-- Primary Meta Tags -->
     <title>Abdul Karim Taji — Senior Full Stack Developer</title>
@@ -26,7 +26,7 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="Abdul Karim Taji — Senior Full Stack Developer">
     <meta property="og:description" content="Senior Full Stack Developer with 7+ years building AI-powered platforms and scalable web systems. Node.js, React, Laravel, TypeScript.">
-    <meta property="og:image" content="https://i.ibb.co/HD2ykMXR/Whats-App-Image-2026-02-11-at-2-32-41-PM.jpg">
+    <meta property="og:image" content="{{ asset('images/profile.jpg') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="Abdul Karim Taji Portfolio">
@@ -37,7 +37,7 @@
     <meta property="twitter:url" content="{{ url()->current() }}">
     <meta property="twitter:title" content="Abdul Karim Taji — Senior Full Stack Developer">
     <meta property="twitter:description" content="Senior Full Stack Developer with 7+ years building AI-powered platforms and scalable web systems. Based in Dubai, UAE.">
-    <meta property="twitter:image" content="https://i.ibb.co/HD2ykMXR/Whats-App-Image-2026-02-11-at-2-32-41-PM.jpg">
+    <meta property="twitter:image" content="{{ asset('images/profile.jpg') }}">
     <meta property="twitter:creator" content="@abdulkarimtaji">
     <meta property="twitter:site" content="@abdulkarimtaji">
 
@@ -338,6 +338,13 @@
             box-shadow: var(--shadow-sm);
         }
 
+        .scroll-progress {
+            position: absolute; left: 0; bottom: -1px;
+            height: 2px; width: 0%;
+            background: linear-gradient(90deg, var(--color-action), var(--color-structural));
+            transition: width 80ms linear;
+        }
+
         .nav-inner {
             display: flex;
             align-items: center;
@@ -447,9 +454,29 @@
 
         .hero-bg {
             position: absolute; inset: 0; z-index: -1;
+            overflow: hidden;
             background:
                 radial-gradient(circle at 15% 20%, color-mix(in oklch, var(--color-action) 14%, transparent) 0%, transparent 45%),
                 radial-gradient(circle at 85% 75%, color-mix(in oklch, var(--color-structural) 12%, transparent) 0%, transparent 50%);
+        }
+
+        .hero-blob {
+            position: absolute;
+            border-radius: var(--radius-full);
+            filter: blur(60px);
+            pointer-events: none;
+        }
+        .hero-blob-1 {
+            width: 22rem; height: 22rem; top: -6rem; left: 5%;
+            background: color-mix(in oklch, var(--color-action) 22%, transparent);
+        }
+        .hero-blob-2 {
+            width: 18rem; height: 18rem; top: 10%; right: 8%;
+            background: color-mix(in oklch, var(--color-structural) 20%, transparent);
+        }
+        .hero-blob-3 {
+            width: 14rem; height: 14rem; bottom: -4rem; left: 40%;
+            background: color-mix(in oklch, var(--gold-90) 30%, transparent);
         }
 
         .hero-grid {
@@ -468,9 +495,27 @@
             font-size: var(--text-3xl);
             margin-bottom: var(--space-4);
         }
+        .hero h1 .line {
+            display: block;
+            padding-right: 0.12em; /* room for italic overhang so gradient-clipped text isn't cut */
+            padding-bottom: 0.08em;
+        }
         .hero h1 em {
             font-style: italic;
+            padding-right: 0.06em;
+            background: linear-gradient(100deg, var(--color-action) 20%, var(--color-structural) 50%, var(--color-action) 80%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
             color: var(--color-action);
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .hero h1 em { animation: gradient-sweep 6s ease-in-out infinite; }
+        }
+        @keyframes gradient-sweep {
+            0%, 100% { background-position: 0% center; }
+            50%      { background-position: 100% center; }
         }
 
         .hero-lead {
@@ -876,14 +921,50 @@
         }
         .reveal.reveal-pending {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(28px) scale(0.98);
         }
         .reveal.reveal-in {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
             transition: opacity var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
             transition-delay: var(--reveal-delay, 0ms);
         }
+
+        /* Per-section entrance character — each area of the page moves
+           differently as it scrolls into view, not a uniform fade-up */
+        .stats-grid .stat.reveal-pending {
+            transform: translateY(24px) scale(0.7);
+        }
+        .stats-grid .stat.reveal-in {
+            transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); /* overshoot/bounce */
+        }
+
+        .skills-grid .skill-card.reveal-pending {
+            transform: translateY(32px) rotate(-2deg) scale(0.94);
+        }
+        .skills-grid .skill-card.reveal-in {
+            transform: translateY(0) rotate(0deg) scale(1);
+        }
+
+        .project-row .project-card.reveal-pending,
+        .project-row-secondary .project-card.reveal-pending {
+            transform: translateY(40px) scale(0.92);
+        }
+
+        .timeline .timeline-item.reveal-pending {
+            transform: translateX(-48px);
+        }
+        .timeline .timeline-item.reveal-in {
+            transform: translateX(0);
+        }
+
+        .about-lead.reveal-pending { transform: translateX(-32px); }
+        .about-lead.reveal-in { transform: translateX(0); }
+        .about-body.reveal-pending { transform: translateX(32px); }
+        .about-body.reveal-in { transform: translateX(0); }
+
+        .cta-panel.reveal-pending { transform: translateY(32px) scale(0.96); }
+        .cta-panel.reveal-in { transform: translateY(0) scale(1); }
 
         /* Stagger — sibling groups get an incremental delay so they cascade
            in rather than popping together (40–100ms rhythm per skill guidance) */
@@ -916,114 +997,246 @@
         .timeline .timeline-item:nth-child(5) { --reveal-delay: 240ms; }
 
         /* ============================================================
-           16. HERO ENTRANCE + AMBIENT MOTION
+           16. HERO ENTRANCE + AMBIENT MOTION (heavy)
            ============================================================ */
         @media (prefers-reduced-motion: no-preference) {
             .hero-copy .eyebrow,
-            .hero-copy h1,
+            .hero-copy h1 .line,
             .hero-lead,
             .hero-actions,
             .hero-meta {
                 opacity: 0;
                 animation: hero-in var(--duration-slow) var(--ease-out) forwards;
             }
-            .hero-copy .eyebrow  { animation-delay: 60ms; }
-            .hero-copy h1        { animation-delay: 140ms; }
-            .hero-lead            { animation-delay: 260ms; }
-            .hero-actions          { animation-delay: 360ms; }
-            .hero-meta               { animation-delay: 440ms; }
+            .hero-copy .eyebrow    { animation-delay: 60ms; }
+            .hero-copy h1 .line:nth-child(1) { animation-delay: 160ms; }
+            .hero-copy h1 .line:nth-child(2) { animation-delay: 260ms; }
+            .hero-copy h1 .line:nth-child(3) { animation-delay: 360ms; }
+            .hero-lead              { animation-delay: 460ms; }
+            .hero-actions            { animation-delay: 560ms; }
+            .hero-meta                 { animation-delay: 660ms; }
 
             .hero-portrait-wrap {
                 opacity: 0;
-                animation: hero-in-scale 700ms var(--ease-out) forwards;
-                animation-delay: 200ms;
+                animation: hero-in-scale 800ms var(--ease-out) forwards;
+                animation-delay: 260ms;
             }
 
             .hero-badge {
-                animation: badge-float 5s ease-in-out infinite;
-                animation-delay: 1s; /* let the entrance settle first */
+                opacity: 0;
+                animation: badge-in 600ms var(--ease-out) forwards, badge-float 5s ease-in-out infinite;
+                animation-delay: 900ms, 1.6s;
             }
 
-            .hero-bg {
-                animation: bg-drift 22s ease-in-out infinite alternate;
-            }
+            .hero-bg { animation: bg-drift 18s ease-in-out infinite alternate; }
+            .hero-blob-1 { animation: blob-float-1 14s ease-in-out infinite; }
+            .hero-blob-2 { animation: blob-float-2 18s ease-in-out infinite; }
+            .hero-blob-3 { animation: blob-float-3 22s ease-in-out infinite; }
+
+            .eyebrow-dot { animation: dot-blink 1.6s ease-in-out infinite; }
+
+            .hero-portrait img { animation: img-breathe 8s ease-in-out infinite; }
         }
 
         @keyframes hero-in {
-            from { opacity: 0; transform: translateY(16px); }
+            from { opacity: 0; transform: translateY(24px); }
             to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes hero-in-scale {
-            from { opacity: 0; transform: scale(0.94) translateY(12px); }
-            to   { opacity: 1; transform: scale(1) translateY(0); }
+            from { opacity: 0; transform: scale(0.88) translateY(20px) rotate(-3deg); }
+            to   { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); }
+        }
+        @keyframes badge-in {
+            from { opacity: 0; transform: translateY(14px) scale(0.85); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
         }
         @keyframes badge-float {
-            0%, 100% { transform: translateY(0); }
-            50%      { transform: translateY(-8px); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50%      { transform: translateY(-10px) rotate(-1.5deg); }
         }
         @keyframes bg-drift {
-            from { transform: scale(1) translate(0, 0); }
-            to   { transform: scale(1.08) translate(-2%, 2%); }
+            0%   { transform: scale(1) translate(0, 0); }
+            50%  { transform: scale(1.1) translate(-3%, 2%); }
+            100% { transform: scale(1.04) translate(2%, -2%); }
+        }
+        @keyframes blob-float-1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33%      { transform: translate(4%, -6%) scale(1.15); }
+            66%      { transform: translate(-3%, 4%) scale(0.9); }
+        }
+        @keyframes blob-float-2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50%      { transform: translate(-6%, -4%) scale(1.2); }
+        }
+        @keyframes blob-float-3 {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50%      { transform: translate(5%, 5%) scale(1.1) rotate(15deg); }
+        }
+        @keyframes dot-blink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%      { opacity: 0.4; transform: scale(0.8); }
+        }
+        @keyframes img-breathe {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.04); }
         }
 
         /* ============================================================
-           17. MICRO-INTERACTIONS
+           17. MICRO-INTERACTIONS (heavy)
            ============================================================ */
         .skill-card-icon,
         .hero-badge-icon {
             transition: transform var(--duration-base) var(--ease-out), background-color var(--duration-base) var(--ease-out);
         }
-        .skill-card:hover .skill-card-icon { transform: rotate(-8deg) scale(1.08); }
+        .skill-card:hover .skill-card-icon { transform: rotate(-12deg) scale(1.15); }
+        .skill-card:hover h4 { color: var(--color-action); }
+        .skill-card h4 { transition: color var(--duration-fast) var(--ease-out); }
+
+        .skill-tag { transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out); }
+        .skill-tag:hover { transform: translateY(-3px) scale(1.06); background: var(--color-action); border-color: var(--color-action); color: var(--color-action-contrast); cursor: default; }
+
+        @media (prefers-reduced-motion: no-preference) {
+            .skill-card.reveal-in .skill-tag {
+                opacity: 0;
+                animation: tag-pop 400ms var(--ease-out) forwards;
+            }
+            .skill-card.reveal-in .skill-tag:nth-child(1) { animation-delay: 80ms; }
+            .skill-card.reveal-in .skill-tag:nth-child(2) { animation-delay: 130ms; }
+            .skill-card.reveal-in .skill-tag:nth-child(3) { animation-delay: 180ms; }
+            .skill-card.reveal-in .skill-tag:nth-child(4) { animation-delay: 230ms; }
+            .skill-card.reveal-in .skill-tag:nth-child(5) { animation-delay: 280ms; }
+            .skill-card.reveal-in .skill-tag:nth-child(6) { animation-delay: 330ms; }
+            .skill-card.reveal-in .skill-tag:nth-child(7) { animation-delay: 380ms; }
+        }
+        @keyframes tag-pop {
+            from { opacity: 0; transform: translateY(8px) scale(0.85); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
         .social-link,
         .theme-toggle {
             transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
         }
+        .social-link:hover { transform: translateY(-4px) scale(1.08) rotate(-4deg); }
         .social-link:active { transform: scale(0.92); }
+        .theme-toggle:hover { transform: rotate(20deg) scale(1.08); }
         .theme-toggle:active { transform: scale(0.9) rotate(-10deg); }
+
+        .btn-ghost { transition: transform var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out); }
+        .btn-ghost:hover { transform: translateY(-2px); background: var(--color-accent-soft); }
+        .btn:active { transform: scale(0.96) !important; }
 
         .timeline-dot {
             transition: transform var(--duration-base) var(--ease-out), border-color var(--duration-base) var(--ease-out), background-color var(--duration-base) var(--ease-out);
         }
-        .timeline-item:hover .timeline-dot { transform: scale(1.15); }
+        .timeline-item:hover .timeline-dot { transform: scale(1.3) rotate(90deg); }
+        .timeline-card { transition: border-color var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out); }
+        .timeline-item:hover .timeline-card { transform: translateX(6px); }
 
         .timeline-item.current .timeline-dot {
             animation: dot-pulse 2.2s ease-in-out infinite;
         }
+        .current-pill { animation: pill-glow 2.4s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce) {
             .timeline-item.current .timeline-dot { animation: none; }
+            .current-pill { animation: none; }
         }
         @keyframes dot-pulse {
-            0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--color-action) 35%, transparent); }
-            50%      { box-shadow: 0 0 0 6px color-mix(in oklch, var(--color-action) 0%, transparent); }
+            0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--color-action) 40%, transparent); }
+            50%      { box-shadow: 0 0 0 8px color-mix(in oklch, var(--color-action) 0%, transparent); }
+        }
+        @keyframes pill-glow {
+            0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--color-action) 30%, transparent); }
+            50%      { box-shadow: 0 0 6px 2px color-mix(in oklch, var(--color-action) 25%, transparent); }
         }
 
-        .project-card { will-change: transform; }
+        .project-card {
+            will-change: transform;
+            transform-style: preserve-3d;
+            transition: border-color var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+        }
         .project-badge { transition: transform var(--duration-base) var(--ease-out); }
-        .project-card:hover .project-badge { transform: scale(1.06); }
+        .project-card:hover .project-badge { transform: scale(1.1) rotate(-4deg); }
+        .project-category { display: inline-block; transition: transform var(--duration-fast) var(--ease-out); }
+        .project-card:hover .project-category { transform: translateX(3px); }
 
         .nav-brand img { transition: transform var(--duration-base) var(--ease-out); }
-        .nav-brand:hover img { transform: rotate(-6deg) scale(1.05); }
+        .nav-brand:hover img { transform: rotate(-10deg) scale(1.12); }
+        .nav-brand { transition: transform var(--duration-fast) var(--ease-out); }
+        .nav-brand:hover { transform: translateY(-1px); }
 
-        /* Button shine sweep on hover */
-        .btn-primary { position: relative; overflow: hidden; }
+        /* Button shine sweep on hover, plus a lift + glow */
+        .btn-primary { position: relative; overflow: hidden; transition: transform var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out); }
         .btn-primary::before {
             content: '';
             position: absolute; top: 0; left: -60%;
             width: 40%; height: 100%;
-            background: linear-gradient(120deg, transparent, color-mix(in oklch, white 45%, transparent), transparent);
+            background: linear-gradient(120deg, transparent, color-mix(in oklch, white 55%, transparent), transparent);
             transform: skewX(-20deg);
             transition: left var(--duration-slow) var(--ease-out);
             pointer-events: none;
         }
         .btn-primary:hover::before { left: 130%; }
+        .btn-primary:hover { box-shadow: 0 0 0 4px color-mix(in oklch, var(--color-action) 22%, transparent), var(--shadow-lg); }
 
-        .cta-panel {
-            transition: transform var(--duration-base) var(--ease-out);
+        .cta-panel { transition: transform var(--duration-base) var(--ease-out); }
+        @media (prefers-reduced-motion: no-preference) {
+            .cta-panel::before { animation: cta-glow-pulse 5s ease-in-out infinite; }
+        }
+        @keyframes cta-glow-pulse {
+            0%, 100% { opacity: 0.7; }
+            50%      { opacity: 1; }
         }
 
+        .stat { transition: transform var(--duration-base) var(--ease-out); }
+        .stat:hover { transform: translateY(-4px); }
         .stat-number { transition: color var(--duration-base) var(--ease-out); }
         .stat:hover .stat-number { color: var(--color-action); }
+
+        .eyebrow { display: inline-flex; align-items: center; gap: var(--space-2); }
+        .eyebrow-dot {
+            display: inline-block; width: 6px; height: 6px; border-radius: var(--radius-full);
+            background: var(--color-action);
+        }
+
+        .subsection-title::after {
+            background: linear-gradient(90deg, var(--color-action), transparent);
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .subsection-title.reveal-in::after {
+                animation: underline-grow 900ms var(--ease-out) forwards;
+                transform-origin: left;
+            }
+        }
+        @keyframes underline-grow {
+            from { transform: scaleX(0); }
+            to   { transform: scaleX(1); }
+        }
+
+        .social-row, .footer-links { }
+        .footer-links a { transition: color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out), padding-left var(--duration-fast) var(--ease-out); }
+        .footer-links a:hover { padding-left: var(--space-2); }
+        .footer-links i { transition: transform var(--duration-fast) var(--ease-out); }
+        .footer-links a:hover i { transform: scale(1.2) rotate(-6deg); }
+
+        .hero-meta span { transition: transform var(--duration-fast) var(--ease-out); }
+        .hero-meta span:hover { transform: translateY(-2px); }
+        .hero-meta i { transition: transform var(--duration-fast) var(--ease-out); }
+        .hero-meta span:hover i { transform: scale(1.25) rotate(-8deg); }
+
+        /* Nav link underline glow (reinforced) */
+        .nav-links a::after {
+            box-shadow: 0 0 8px 0 color-mix(in oklch, var(--color-action) 0%, transparent);
+            transition: right var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out);
+        }
+        .nav-links a:hover::after { box-shadow: 0 0 8px 0 color-mix(in oklch, var(--color-action) 60%, transparent); }
+
+        /* Section head entrance flourish */
+        @media (prefers-reduced-motion: no-preference) {
+            .section-head.reveal-in .eyebrow { animation: hero-in 500ms var(--ease-out) both; }
+            .section-head.reveal-in h2       { animation: hero-in 500ms var(--ease-out) 90ms both; }
+            .section-head.reveal-in p        { animation: hero-in 500ms var(--ease-out) 180ms both; }
+        }
     </style>
 </head>
 <body>
@@ -1033,9 +1246,10 @@
          NAVIGATION
          ============================================================ -->
     <header class="site-nav" id="siteNav">
+        <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
         <div class="container nav-inner">
             <a class="nav-brand" href="#home">
-                <img src="https://i.ibb.co/wNPhM5GW/33.jpg" alt="" width="40" height="40">
+                <img src="{{ asset('images/profile.jpg') }}" alt="" width="40" height="40">
                 <span class="nav-brand-name">Abdul Karim Taji</span>
             </a>
 
@@ -1075,12 +1289,20 @@
              HERO
              ============================================================ -->
         <section id="home" class="hero">
-            <div class="hero-bg" aria-hidden="true"></div>
+            <div class="hero-bg" aria-hidden="true">
+                <span class="hero-blob hero-blob-1" aria-hidden="true"></span>
+                <span class="hero-blob hero-blob-2" aria-hidden="true"></span>
+                <span class="hero-blob hero-blob-3" aria-hidden="true"></span>
+            </div>
             <div class="container">
                 <div class="hero-grid">
                     <div class="hero-copy">
-                        <span class="eyebrow">Dubai, UAE · Available for select engagements</span>
-                        <h1>Building <em>AI&#8209;powered</em> platforms that hold up at scale.</h1>
+                        <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Dubai, UAE · Available for select engagements</span>
+                        <h1>
+                            <span class="line">Building <em>AI&#8209;powered</em></span>
+                            <span class="line">platforms that hold</span>
+                            <span class="line">up at scale.</span>
+                        </h1>
                         <p class="hero-lead">Senior Full&nbsp;Stack Developer with 7+ years shipping fintech, AI, and e-commerce systems end to end — from backend architecture to the interface people actually touch.</p>
 
                         <div class="hero-actions">
@@ -1105,7 +1327,7 @@
 
                     <div class="hero-portrait-wrap">
                         <div class="hero-portrait">
-                            <img src="https://i.ibb.co/wNPhM5GW/33.jpg" alt="Portrait of Abdul Karim Taji" width="352" height="352" fetchpriority="high">
+                            <img src="{{ asset('images/profile.jpg') }}" alt="Portrait of Abdul Karim Taji" width="352" height="352" fetchpriority="high">
                         </div>
                         <div class="hero-badge">
                             <div class="hero-badge-icon"><i class="fas fa-briefcase" aria-hidden="true"></i></div>
@@ -1494,11 +1716,16 @@
                 try { localStorage.setItem('theme', next); } catch (e) {}
             });
 
-            // ---- Sticky nav shadow ----
+            // ---- Sticky nav shadow + scroll progress bar ----
             var nav = document.getElementById('siteNav');
+            var progressBar = document.getElementById('scrollProgress');
             var onScroll = function () {
                 if (window.scrollY > 24) { nav.classList.add('scrolled'); }
                 else { nav.classList.remove('scrolled'); }
+
+                var scrollable = document.documentElement.scrollHeight - window.innerHeight;
+                var pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+                progressBar.style.width = pct + '%';
             };
             window.addEventListener('scroll', onScroll, { passive: true });
             onScroll();
@@ -1607,6 +1834,40 @@
                     });
                 }, { threshold: 0.6 });
                 counters.forEach(function (el) { observer.observe(el); });
+            }
+
+            // ---- 3D tilt on project cards (pointer-driven, rAF-throttled) ----
+            if (!prefersReducedMotion && window.matchMedia('(hover: hover)').matches) {
+                var tiltCards = document.querySelectorAll('.project-card, .skill-card');
+                var ticking = false;
+                var pendingCard = null, pendingX = 0, pendingY = 0;
+
+                var applyTilt = function () {
+                    ticking = false;
+                    if (!pendingCard) return;
+                    var rect = pendingCard.getBoundingClientRect();
+                    var relX = (pendingX - rect.left) / rect.width - 0.5;
+                    var relY = (pendingY - rect.top) / rect.height - 0.5;
+                    var rotateY = relX * 8;
+                    var rotateX = relY * -8;
+                    pendingCard.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
+                };
+
+                tiltCards.forEach(function (card) {
+                    card.addEventListener('mousemove', function (e) {
+                        pendingCard = card;
+                        pendingX = e.clientX;
+                        pendingY = e.clientY;
+                        if (!ticking) {
+                            ticking = true;
+                            window.requestAnimationFrame(applyTilt);
+                        }
+                    });
+                    card.addEventListener('mouseleave', function () {
+                        card.style.transform = '';
+                        pendingCard = null;
+                    });
+                });
             }
         })();
     </script>
