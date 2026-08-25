@@ -58,11 +58,14 @@ function supportsWebGL() {
 }
 
 /**
- * mountGame(container, gameId, data) -> Promise<{ dispose() }>
+ * mountGame(container, gameId, data, opts) -> Promise<{ dispose() }>
  * Shows a poster; on Start, loads the module and boots it. Returns a handle
  * whose dispose() tears down everything (engine, input, theme watcher, HUD).
+ * opts.autoStart skips the poster and boots immediately — still respects
+ * prefers-reduced-motion and missing WebGL by falling back to the poster.
  */
-export async function mountGame(container, gameId, data) {
+export async function mountGame(container, gameId, data, opts) {
+    const autoStart = !!(opts && opts.autoStart);
     const meta = GAME_META[gameId];
     let active = null; // { engine, input, themeWatcher, hud, gameInstance }
 
@@ -113,6 +116,14 @@ export async function mountGame(container, gameId, data) {
             disabledReason: 'Your browser doesn’t support 3D graphics here — no problem, everything above tells the same story.',
         });
         return { dispose() {} };
+    }
+
+    // Auto-start skips the click-to-play poster entirely — but a game must
+    // never auto-start motion for a user who asked for less of it, so that
+    // preference still falls back to the normal poster-and-click flow.
+    if (autoStart && !reduceMotion()) {
+        await boot();
+        return { dispose() { teardown(); } };
     }
 
     const poster = startPoster(container, {

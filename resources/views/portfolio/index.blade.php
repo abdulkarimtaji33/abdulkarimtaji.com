@@ -1658,7 +1658,7 @@
         if (towerFrame) { mountGame(towerFrame, 'tower', data); }
 
         var worldFrame = document.getElementById('game-frame-world');
-        if (worldFrame) { mountGame(worldFrame, 'world', data); }
+        if (worldFrame) { mountGame(worldFrame, 'world', data, { autoStart: true }); }
     </script>
 </body>
 </html>
