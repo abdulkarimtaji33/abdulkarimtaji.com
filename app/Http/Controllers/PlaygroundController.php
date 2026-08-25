@@ -2,29 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Project;
-use App\Models\Setting;
 
-class PortfolioController extends Controller
+class PlaygroundController extends Controller
 {
     public function index()
     {
         $featuredProjects = Project::where('is_featured', true)->get();
         $otherProjects = Project::where('is_featured', false)->get();
 
-        // Get theme settings
-        $themeColor = Setting::get('theme_color', 'purple');
-        $themes = json_decode(Setting::get('themes', '{}'), true);
-        $currentTheme = $themes[$themeColor] ?? $themes['purple'];
-
-        $gameData = $this->buildGameData($featuredProjects, $otherProjects);
-
-        return view('portfolio.index', compact('featuredProjects', 'otherProjects', 'currentTheme', 'themeColor', 'gameData'));
-    }
-
-    protected function buildGameData($featuredProjects, $otherProjects)
-    {
         $projects = $featuredProjects->concat($otherProjects)->map(function ($project) {
             return [
                 'id' => $project->id,
@@ -35,10 +21,12 @@ class PortfolioController extends Controller
             ];
         })->values();
 
-        return [
+        $gameData = [
             'companies' => config('portfolio.companies', []),
             'skills' => config('portfolio.skills', []),
             'projects' => $projects,
         ];
+
+        return view('portfolio.playground', compact('gameData'));
     }
 }
