@@ -239,9 +239,6 @@ export default {
     _showBanner(text, colorHex) {
         const el = document.createElement('div');
         el.className = 'tower-banner';
-        // Stack banners vertically instead of one replacing/overlapping the
-        // other — the first active one sits "up", the next "down" below it.
-        el.style.top = (14 + this.banners.length * 13) + '%';
         el.style.background = 'linear-gradient(135deg,' + hexCss(colorHex) + ',' + hexCss(shade(colorHex, 0.3)) + ')';
         el.textContent = text;
         this.container.appendChild(el);
@@ -906,8 +903,6 @@ export default {
         };
         this.footprint = to;
 
-        this._showBanner(meta.label + ' complete!', meta.color);
-        this.hud.announce(meta.label + ' complete');
         this._spawnBurst(position, [meta.color, shade(meta.color, 0.35), 0xffffff], 22, 0.9);
 
         // pulse the just-placed block's edges
