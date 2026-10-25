@@ -23,11 +23,6 @@
                     <span class="tag">{{ $project->category }}</span>
                     <h3>{{ $project->name }}</h3>
                     <p>{{ $project->description }}</p>
-                    @if($project->url && $project->url !== '#')
-                    <a href="{{ $project->url }}" class="link" target="_blank" rel="noopener">Visit site <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
-                    @elseif($project->url === '#')
-                    <span class="muted"><i class="fas fa-mobile-screen" aria-hidden="true"></i> Contact for demo</span>
-                    @endif
                 </div>
             </article>
             @endforeach
