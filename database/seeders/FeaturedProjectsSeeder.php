@@ -48,25 +48,25 @@ class FeaturedProjectsSeeder extends Seeder
             [
                 'name' => 'Lunchbox Ai',
                 'category' => 'Ai/Mobile',
-                'image' => 'images/projects/lunchbox-ai.svg',
+                'image' => 'images/projects/lunchbox-ai.webp',
                 'description' => 'Parents photograph a lunchbox and ingredients; vision and image models design an allergy-safe packed lunch. Child profiles, credit packs through Stripe, push notifications and an admin dashboard.',
             ],
             [
                 'name' => 'Pulse Ai',
                 'category' => 'Ai/Analytics',
-                'image' => 'images/projects/pulse.svg',
+                'image' => 'images/projects/pulse.webp',
                 'description' => '"Ask your database": an Ai agent connects to Postgres, MySQL or MongoDB, writes guarded read-only queries and builds live dashboards with KPIs, charts and maps, streamed tile by tile.',
             ],
             [
                 'name' => 'Socialposter',
                 'category' => 'Marketing/Ai',
-                'image' => 'images/projects/socialposter.svg',
+                'image' => 'images/projects/socialposter.webp',
                 'description' => 'Daily Ai-generated image and caption per business, published automatically to LinkedIn, Facebook and Instagram, with per-business schedules, logo tools and product posts.',
             ],
             [
                 'name' => 'Upwork Automation',
                 'category' => 'Automation/Ai',
-                'image' => 'images/projects/upwork-automation.svg',
+                'image' => 'images/projects/upwork-automation.webp',
                 'description' => 'Finds relevant freelance jobs the moment they appear, scores them with Ai, suggests milestones and pricing, sends email alerts and tracks proposals with evidence screenshots.',
             ],
             [
@@ -88,7 +88,7 @@ class FeaturedProjectsSeeder extends Seeder
 
         // BBrain is featured too; the other older projects sit under "More projects".
         // Display order of the featured ones lives in config/portfolio.php (featured_order).
-        Project::where('name', 'BBrain')->update(['is_featured' => true]);
+        Project::where('name', 'BBrain')->update(['is_featured' => true, 'image' => 'images/projects/bbrain.webp']);
         Project::whereIn('name', ['UAE Entry Visa', 'Aile Properties', 'Design Iconic'])
             ->update(['is_featured' => false]);
 
