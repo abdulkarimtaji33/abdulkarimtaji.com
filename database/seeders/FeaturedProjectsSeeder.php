@@ -6,7 +6,8 @@ use App\Models\Project;
 use Illuminate\Database\Seeder;
 
 /**
- * Adds the product builds to the featured work list. Safe to re-run:
+ * Adds the product builds to the work lists (some featured, the rest under
+ * "More projects"). Safe to re-run:
  * rows are matched by name. Empty url = no public link is shown.
  */
 class FeaturedProjectsSeeder extends Seeder
@@ -51,7 +52,7 @@ class FeaturedProjectsSeeder extends Seeder
                 'description' => 'Parents photograph a lunchbox and ingredients; vision and image models design an allergy-safe packed lunch. Child profiles, credit packs through Stripe, push notifications and an admin dashboard.',
             ],
             [
-                'name' => 'Pulse',
+                'name' => 'Pulse Ai',
                 'category' => 'AI/Analytics',
                 'image' => 'images/projects/pulse.svg',
                 'description' => '"Ask your database": a Claude agent connects to Postgres, MySQL or MongoDB, writes guarded read-only queries and builds live dashboards with KPIs, charts and maps, streamed tile by tile.',
@@ -82,10 +83,16 @@ class FeaturedProjectsSeeder extends Seeder
             ],
         ];
 
+        // Only these stay in the pinned showcase; the rest list under "More projects".
+        $featured = ['Pulse Ai', 'Lunchbox AI', 'Socialposter', 'Upwork Automation'];
+
+        // "Pulse" was renamed; keep re-runs from creating a duplicate row.
+        Project::where('name', 'Pulse')->update(['name' => 'Pulse Ai']);
+
         foreach ($items as $item) {
             Project::updateOrCreate(
                 ['name' => $item['name']],
-                $item + ['url' => '', 'is_featured' => true]
+                $item + ['url' => '', 'is_featured' => in_array($item['name'], $featured, true)]
             );
         }
     }
