@@ -1,4 +1,4 @@
-// site.js — page behaviour. Everything is progressive: with JS off the page is plain, readable HTML.
+// site.js: page behaviour. Everything is progressive: with JS off the page is plain, readable HTML.
 const root = document.documentElement;
 const $ = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
