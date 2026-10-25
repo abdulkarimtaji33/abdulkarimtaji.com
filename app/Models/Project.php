@@ -21,4 +21,12 @@ class Project extends Model
     protected $casts = [
         'is_featured' => 'boolean'
     ];
+
+    // Remote images (e.g. stock photos) are used as-is; local paths go through asset().
+    public function getImageUrlAttribute()
+    {
+        $image = (string) $this->image;
+
+        return preg_match('#^https?://#i', $image) ? $image : asset($image);
+    }
 }

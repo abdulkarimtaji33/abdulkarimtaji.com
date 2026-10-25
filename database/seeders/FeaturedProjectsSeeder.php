@@ -1,0 +1,92 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Project;
+use Illuminate\Database\Seeder;
+
+/**
+ * Adds the product builds to the featured work list. Safe to re-run:
+ * rows are matched by name. Empty url = no public link is shown.
+ */
+class FeaturedProjectsSeeder extends Seeder
+{
+    public function run()
+    {
+        $items = [
+            [
+                'name' => 'ClearEarth ERP',
+                'category' => 'ERP/SaaS',
+                'image' => 'images/projects/clearearth-erp.svg',
+                'description' => 'Multi-tenant ERP for a UAE recycling and waste-management company. CRM, quotations with PIN approval, inspections, work orders, GRN, UAE-VAT invoicing, full accounting and HR with payroll, across roughly 100 data models.',
+            ],
+            [
+                'name' => 'Jyotish Astrology',
+                'category' => 'Astrology/AI',
+                'image' => 'images/projects/jyotish-astrology.svg',
+                'description' => 'Vedic birth-chart app built on Swiss Ephemeris: planetary positions, dashas, transits, AI readings, name numerology and email transit reminders, with an admin back-office for the reference data.',
+            ],
+            [
+                'name' => 'Business Idea Generator',
+                'category' => 'AI/Reports',
+                'image' => 'images/projects/business-idea-generator.svg',
+                'description' => 'Turns a rough idea into an investor-style report of 21 sections streamed live, with follow-up chat, section regeneration, comparison, PDF/DOCX export, share links and a daily AI budget cap.',
+            ],
+            [
+                'name' => 'Building Management',
+                'category' => 'Property/SaaS',
+                'image' => 'images/projects/building-management.svg',
+                'description' => 'Property-management system for buildings, units and residents: maintenance requests, complaints, assets, finance, vendor tenders, visitor and patrol security, with separate dashboards for admins, residents, technicians and gatekeepers.',
+            ],
+            [
+                'name' => 'CGA Games',
+                'category' => 'E-commerce',
+                'image' => 'images/projects/cga-games.svg',
+                'description' => 'Live gaming store for the GCC selling gift cards, game codes and consoles. Supplier-API auto-fulfilment with retries and a circuit breaker, buy-now-pay-later, loyalty, bilingual storefront and a full admin panel.',
+            ],
+            [
+                'name' => 'Lunchbox AI',
+                'category' => 'AI/Mobile',
+                'image' => 'images/projects/lunchbox-ai.svg',
+                'description' => 'Parents photograph a lunchbox and ingredients; vision and image models design an allergy-safe packed lunch. Child profiles, credit packs through Stripe, push notifications and an admin dashboard.',
+            ],
+            [
+                'name' => 'Pulse',
+                'category' => 'AI/Analytics',
+                'image' => 'images/projects/pulse.svg',
+                'description' => '"Ask your database": a Claude agent connects to Postgres, MySQL or MongoDB, writes guarded read-only queries and builds live dashboards with KPIs, charts and maps, streamed tile by tile.',
+            ],
+            [
+                'name' => 'Socialposter',
+                'category' => 'Marketing/AI',
+                'image' => 'images/projects/socialposter.svg',
+                'description' => 'Daily AI-generated image and caption per business, published automatically to LinkedIn, Facebook and Instagram, with per-business schedules, logo tools and product posts.',
+            ],
+            [
+                'name' => 'Upwork Automation',
+                'category' => 'Automation/AI',
+                'image' => 'images/projects/upwork-automation.svg',
+                'description' => 'Finds relevant freelance jobs the moment they appear, scores them with AI, suggests milestones and pricing, sends email alerts and tracks proposals with evidence screenshots.',
+            ],
+            [
+                'name' => 'Video Generator',
+                'category' => 'AI/Media',
+                'image' => 'images/projects/video-generator.svg',
+                'description' => 'One idea becomes a short cinematic video: story, a consistent main character, shot breakdown, per-shot images and image-to-video clips, run as an automatic pipeline.',
+            ],
+            [
+                'name' => 'Jobber',
+                'category' => 'Automation/AI',
+                'image' => 'images/projects/jobber.svg',
+                'description' => 'Job-application automation: completes LinkedIn Easy Apply and Indeed Apply from a link list, answers questions from the CV with AI under strict rules, and tracks every application in a dashboard.',
+            ],
+        ];
+
+        foreach ($items as $item) {
+            Project::updateOrCreate(
+                ['name' => $item['name']],
+                $item + ['url' => '', 'is_featured' => true]
+            );
+        }
+    }
+}
