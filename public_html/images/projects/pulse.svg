@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" role="img" aria-label="AI Analytics">
-<defs>
-<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsla(185,55%,14%,1)"/><stop offset="1" stop-color="#07070b"/></linearGradient>
-<radialGradient id="glow" cx=".72" cy=".4" r=".7"><stop offset="0" stop-color="hsla(185,90%,55%,0.55)"/><stop offset="1" stop-color="hsla(185,90%,55%,0)"/></radialGradient>
-<radialGradient id="core"><stop offset="0" stop-color="hsla(215,95%,80%,1)"/><stop offset="1" stop-color="hsla(185,90%,55%,0)"/></radialGradient>
-</defs>
-<rect width="960" height="540" fill="url(#bg)"/><rect width="960" height="540" fill="url(#glow)"/>
-<path d="M300 150 C 420 80, 540 230, 660 150 S 880 90, 960 160" fill="none" stroke="hsla(185,90%,66%,0.75)" stroke-width="2.4"/><path d="M300 178 C 420 114, 540 252, 660 178 S 880 118, 960 188" fill="none" stroke="hsla(194,90%,66%,0.69)" stroke-width="2.4"/><path d="M300 206 C 420 148, 540 274, 660 206 S 880 146, 960 216" fill="none" stroke="hsla(203,90%,66%,0.63)" stroke-width="2.4"/><path d="M300 234 C 420 182, 540 296, 660 234 S 880 174, 960 244" fill="none" stroke="hsla(212,90%,66%,0.5700000000000001)" stroke-width="2.4"/><path d="M300 262 C 420 216, 540 318, 660 262 S 880 202, 960 272" fill="none" stroke="hsla(221,90%,66%,0.51)" stroke-width="2.4"/><path d="M300 290 C 420 250, 540 340, 660 290 S 880 230, 960 300" fill="none" stroke="hsla(230,90%,66%,0.45)" stroke-width="2.4"/><path d="M300 318 C 420 284, 540 362, 660 318 S 880 258, 960 328" fill="none" stroke="hsla(239,90%,66%,0.39)" stroke-width="2.4"/><path d="M300 346 C 420 318, 540 384, 660 346 S 880 286, 960 356" fill="none" stroke="hsla(248,90%,66%,0.33)" stroke-width="2.4"/><path d="M300 374 C 420 352, 540 406, 660 374 S 880 314, 960 384" fill="none" stroke="hsla(257,90%,66%,0.27)" stroke-width="2.4"/>
-</svg>
