@@ -12,3 +12,5 @@ npm-debug.log
 yarn-error.log
 /public_html/courses
 /public_html/courses/*
+/live_dump.sql
+/.env.live-copy
