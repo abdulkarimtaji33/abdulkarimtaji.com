@@ -8,7 +8,14 @@ class PortfolioController extends Controller
 {
     public function index()
     {
-        $featuredProjects = Project::where('is_featured', true)->get();
+        $order = config('portfolio.featured_order', []);
+        $featuredProjects = Project::where('is_featured', true)->get()
+            ->sortBy(function ($project) use ($order) {
+                $position = array_search($project->name, $order, true);
+
+                return $position === false ? 999 : $position;
+            })
+            ->values();
         $otherProjects = Project::where('is_featured', false)->get();
         $categories = $otherProjects->pluck('category')->filter()->unique()->values();
 

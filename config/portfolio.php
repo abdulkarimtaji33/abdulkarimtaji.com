@@ -20,15 +20,18 @@ return [
         'linkedin' => 'https://www.linkedin.com/in/abdul-karim-taji-09a56821a',
         'portrait' => 'images/profile.jpg',
         'headline' => ['I build software', 'that ships', 'and scales.'],
-        'lead' => 'Senior full-stack engineer with 7+ years shipping fintech, AI and e-commerce platforms end to end, from backend architecture to the interface people actually touch.',
+        'lead' => 'Senior full-stack engineer with 7+ years shipping fintech, Ai and e-commerce platforms end to end, from backend architecture to the interface people actually touch.',
         'availability' => 'Available for select engagements',
-        'about_lead' => 'Specialising in AI-driven platforms and scalable systems for finance, travel and real estate.',
+        'about_lead' => 'Specialising in Ai-driven platforms and scalable systems for finance, travel and real estate.',
         'about' => [
-            'I am a senior full-stack engineer with **7+ years** of experience building, scaling and maintaining large web and AI-enabled applications. My work spans backend and frontend, API design and integration, and mentoring the engineers around me.',
-            'I work closely with cross-functional teams to deliver **secure, high-performance solutions** that hold up under real financial and operational data, not just demos. That means seamless integration across web, mobile and AI systems, and code the next engineer can actually maintain.',
+            'I am a senior full-stack engineer with **7+ years** of experience building, scaling and maintaining large web and Ai-enabled applications. My work spans backend and frontend, API design and integration, and mentoring the engineers around me.',
+            'I work closely with cross-functional teams to deliver **secure, high-performance solutions** that hold up under real financial and operational data, not just demos. That means seamless integration across web, mobile and Ai systems, and code the next engineer can actually maintain.',
         ],
-        'contact_lead' => 'I am open to select senior full-stack and AI-platform engagements. Tell me what you are building and let us make it real.',
+        'contact_lead' => 'I am open to select senior full-stack and Ai-platform engagements. Tell me what you are building and let us make it real.',
     ],
+
+    // Order of the stacked featured cards; anything not listed goes last.
+    'featured_order' => ['Pulse Ai', 'Lunchbox Ai', 'BBrain', 'Socialposter', 'Upwork Automation'],
 
     'stats' => [
         ['value' => 7, 'suffix' => '+', 'label' => 'Years experience'],
@@ -48,7 +51,7 @@ return [
 
     'marquee' => [
         ['Node.js', 'TypeScript', 'React', 'Next.js', 'Laravel', 'NestJS', 'PHP', 'Python', 'Vue.js'],
-        ['PostgreSQL', 'MySQL', 'MongoDB', 'Firebase', 'AWS', 'Docker', 'CI/CD', 'REST APIs', 'AI Integrations'],
+        ['PostgreSQL', 'MySQL', 'MongoDB', 'Firebase', 'AWS', 'Docker', 'CI/CD', 'REST APIs', 'Ai Integrations'],
     ],
 
     // "tags" are highlights taken from each role's own description.
@@ -60,18 +63,18 @@ return [
             'role' => 'Senior Software Engineer, Full Stack',
             'period' => 'May 2025 – Present',
             'current' => true,
-            'blurb' => 'Web platforms for digital loan origination, credit assessment and customer onboarding. Owned end-to-end delivery with primary responsibility for backend architecture and data integrity: secure, scalable REST APIs integrating AI-driven credit and risk engines and third-party financial services, plus access control, audit logging and compliance-aligned backend logic.',
-            'tags' => ['REST API Design', 'Security', 'AI risk engines', 'Audit logging'],
+            'blurb' => 'Web platforms for digital loan origination, credit assessment and customer onboarding. Owned end-to-end delivery with primary responsibility for backend architecture and data integrity: secure, scalable REST APIs integrating Ai-driven credit and risk engines and third-party financial services, plus access control, audit logging and compliance-aligned backend logic.',
+            'tags' => ['REST API Design', 'Security', 'Ai risk engines', 'Audit logging'],
         ],
         [
             'id' => 'herogram',
             'name' => 'Herogram',
             'place' => 'Dubai',
-            'role' => 'Senior Software Engineer, Full Stack (AI Products)',
+            'role' => 'Senior Software Engineer, Full Stack (Ai Products)',
             'period' => 'Jan 2024 – Apr 2025',
             'current' => false,
-            'blurb' => 'Led development of large-scale AI-based web products with an emphasis on backend architecture. Designed scalable RESTful APIs integrating frontend and AI components, automated critical workflows and mentored junior developers.',
-            'tags' => ['REST API Design', 'AI products', 'Workflow automation', 'Mentorship'],
+            'blurb' => 'Led development of large-scale Ai-based web products with an emphasis on backend architecture. Designed scalable RESTful APIs integrating frontend and Ai components, automated critical workflows and mentored junior developers.',
+            'tags' => ['REST API Design', 'Ai products', 'Workflow automation', 'Mentorship'],
         ],
         [
             'id' => 'brainwave',
@@ -107,15 +110,15 @@ return [
 
     'skills' => [
         // backend
-        ['id' => 'nodejs', 'label' => 'Node.js', 'group' => 'backend', 'fact' => 'APIs powering AI-driven credit-risk engines at RAMA.'],
+        ['id' => 'nodejs', 'label' => 'Node.js', 'group' => 'backend', 'fact' => 'APIs powering Ai-driven credit-risk engines at RAMA.'],
         ['id' => 'typescript', 'label' => 'TypeScript', 'group' => 'backend', 'fact' => 'Type-safe code across backend and frontend.'],
         ['id' => 'javascript', 'label' => 'JavaScript', 'group' => 'backend', 'fact' => 'The common thread across every stack touched.'],
         ['id' => 'php', 'label' => 'PHP', 'group' => 'backend', 'fact' => '7+ years building and securing large-scale systems.'],
         ['id' => 'laravel', 'label' => 'Laravel', 'group' => 'backend', 'fact' => 'Backend architecture across fintech and travel platforms.'],
         ['id' => 'nestjs', 'label' => 'NestJS', 'group' => 'backend', 'fact' => 'Structured, scalable API design.'],
-        ['id' => 'python', 'label' => 'Python', 'group' => 'backend', 'fact' => 'Automation and AI-adjacent tooling.'],
+        ['id' => 'python', 'label' => 'Python', 'group' => 'backend', 'fact' => 'Automation and Ai-adjacent tooling.'],
         // frontend
-        ['id' => 'react', 'label' => 'React.js', 'group' => 'frontend', 'fact' => 'Interfaces for AI-based web products.'],
+        ['id' => 'react', 'label' => 'React.js', 'group' => 'frontend', 'fact' => 'Interfaces for Ai-based web products.'],
         ['id' => 'nextjs', 'label' => 'Next.js', 'group' => 'frontend', 'fact' => 'Modern, fast-loading frontends.'],
         ['id' => 'vuejs', 'label' => 'Vue.js', 'group' => 'frontend', 'fact' => 'Reactive UI for internal tools and dashboards.'],
         ['id' => 'html5', 'label' => 'HTML5', 'group' => 'frontend', 'fact' => 'Semantic, accessible markup as the foundation.'],
@@ -133,7 +136,7 @@ return [
         ['id' => 'git', 'label' => 'Git', 'group' => 'devops', 'fact' => 'Disciplined version control across every team.'],
         ['id' => 'docker', 'label' => 'Docker', 'group' => 'devops', 'fact' => 'Consistent, portable environments.'],
         // craft
-        ['id' => 'rest-api', 'label' => 'REST API Design', 'group' => 'craft', 'fact' => 'Consistent contracts across mobile, web and AI systems.'],
+        ['id' => 'rest-api', 'label' => 'REST API Design', 'group' => 'craft', 'fact' => 'Consistent contracts across mobile, web and Ai systems.'],
         ['id' => 'seo', 'label' => 'SEO', 'group' => 'craft', 'fact' => 'Technical optimisation for real organic visibility.'],
         ['id' => 'performance', 'label' => 'Performance', 'group' => 'craft', 'fact' => 'Systems that hold up under real load.'],
         ['id' => 'security', 'label' => 'Security', 'group' => 'craft', 'fact' => 'Access control and compliance-aligned backend logic.'],

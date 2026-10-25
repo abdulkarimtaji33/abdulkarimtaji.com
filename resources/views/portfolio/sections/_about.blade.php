@@ -5,7 +5,7 @@
                 <div class="portrait-frame">
                     <img src="{{ asset($profile['portrait']) }}" alt="Portrait of {{ $profile['name'] }}" width="640" height="640" loading="lazy" data-parallax>
                 </div>
-                <figcaption class="portrait-badge"><b>{{ $stats[0]['value'] }}{{ $stats[0]['suffix'] }}</b> years building<br>full-stack &amp; AI systems</figcaption>
+                <figcaption class="portrait-badge"><b>{{ $stats[0]['value'] }}{{ $stats[0]['suffix'] }}</b> years building<br>full-stack &amp; Ai systems</figcaption>
             </figure>
 
             <div class="about-copy">

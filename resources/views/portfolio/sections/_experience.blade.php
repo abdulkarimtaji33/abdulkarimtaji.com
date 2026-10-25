@@ -3,7 +3,7 @@
         <div class="section-head">
             <p class="eyebrow reveal"><span class="dot"></span>Professional journey</p>
             <h2 class="h2 reveal">Where I've built.</h2>
-            <p class="body reveal">A track record across financial platforms, AI products and full-stack teams.</p>
+            <p class="body reveal">A track record across financial platforms, Ai products and full-stack teams.</p>
         </div>
 
         <ol class="timeline" id="timeline">

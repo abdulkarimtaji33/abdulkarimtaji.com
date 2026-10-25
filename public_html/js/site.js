@@ -201,22 +201,59 @@ if (gsap && ScrollTrigger && !reduce) {
         gsap.to(fill, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: tl, start: 'top 70%', end: 'bottom 60%', scrub: true } });
         $$('.tl-item', tl).forEach((it) => ScrollTrigger.create({ trigger: it, start: 'top 62%', onEnter: () => it.classList.add('is-lit'), onLeaveBack: () => it.classList.remove('is-lit') }));
     }
-
-    // pinned horizontal showcase
-    const mm = gsap.matchMedia();
-    mm.add('(min-width: 1024px) and (hover: hover)', () => {
-        const pin = $('#workPin'), track = $('#workTrack'), bar = $('#workBar');
-        if (!pin || !track) return;
-        pin.classList.add('h-scroll');
-        const dist = () => Math.max(0, track.scrollWidth - window.innerWidth + 40);
-        const tween = gsap.to(track, {
-            x: () => -dist(), ease: 'none',
-            scrollTrigger: { trigger: pin, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1,
-                onUpdate: (self) => { if (bar) bar.style.transform = 'scaleX(' + self.progress + ')'; } },
-        });
-        return () => { pin.classList.remove('h-scroll'); gsap.set(track, { clearProps: 'all' }); tween.kill(); };
-    });
 }
+
+/* ---------- stacking cards (featured work) ---------- */
+(function stackCards() {
+    const list = $('#stackList');
+    if (!list) return;
+    const items = $$('.stack-item', list);
+    const dots = $$('.rail-dot');
+    const nEl = $('#railN'), nameEl = $('#railName');
+    const topOf = (el) => parseFloat(getComputedStyle(el).top) || 0;
+    const stuck = () => getComputedStyle(items[0]).position === 'sticky';
+
+    // the covered card shrinks and dims as the next one slides over it
+    if (gsap && ScrollTrigger && !reduce) {
+        items.forEach((it, i) => {
+            const next = items[i + 1];
+            if (!next) return;
+            gsap.to($('.slide', it), {
+                scale: 0.93, filter: 'brightness(.5)', ease: 'none',
+                scrollTrigger: {
+                    trigger: next, start: 'top bottom-=80',
+                    end: () => 'top ' + (stuck() ? topOf(next) + 'px' : '-100%'),
+                    scrub: true, invalidateOnRefresh: true,
+                },
+            });
+        });
+    }
+
+    // which card is on top right now -> counter, name, dots
+    let active = -1;
+    function sync() {
+        let idx = 0;
+        if (stuck()) items.forEach((it, i) => { if (it.getBoundingClientRect().top <= topOf(it) + 40) idx = i; });
+        else items.forEach((it, i) => { if (it.getBoundingClientRect().top <= window.innerHeight * 0.4) idx = i; });
+        if (idx === active) return;
+        active = idx;
+        if (nEl) nEl.textContent = String(idx + 1).padStart(2, '0');
+        if (nameEl && dots[idx]) nameEl.textContent = dots[idx].dataset.name;
+        dots.forEach((d, i) => d.classList.toggle('is-on', i === idx));
+    }
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+
+    // click a dot -> scroll so that card is the one on top
+    dots.forEach((d) => d.addEventListener('click', () => {
+        const i = Number(d.dataset.go);
+        let y = list.getBoundingClientRect().top + window.scrollY;
+        for (let k = 0; k < i; k++) y += items[k].offsetHeight;
+        y -= stuck() ? topOf(items[i]) : 90;
+        if (lenis) lenis.scrollTo(y); else window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+    }));
+})();
 
 /* ---------- intro: preloader + hero entrance ---------- */
 function heroIn() {
