@@ -1,4 +1,4 @@
-// perf.js — device tiering + a rolling FPS meter. No rendering logic here.
+// perf.js: device tiering + a rolling FPS meter. No rendering logic here.
 
 export function detectTier() {
     const memory = navigator.deviceMemory || 4;

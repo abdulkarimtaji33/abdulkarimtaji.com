@@ -8,8 +8,8 @@
     <link rel="icon" href="{{ asset('images/profile.jpg') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/profile.jpg') }}">
 
-    <title>Abdul Karim Taji — Senior Full Stack Developer</title>
-    <meta name="title" content="Abdul Karim Taji — Senior Full Stack Developer">
+    <title>Abdul Karim Taji | Senior Full Stack Developer</title>
+    <meta name="title" content="Abdul Karim Taji | Senior Full Stack Developer">
     <meta name="description" content="Senior Full Stack Developer with 7+ years building AI-powered platforms and scalable web systems. Node.js, React, Laravel, TypeScript. Based in Dubai, UAE.">
     <meta name="keywords" content="Full Stack Developer, Senior Developer, Node.js, React, Laravel, JavaScript, TypeScript, PHP, AI Solutions, Web Development, Dubai Developer, UAE, Backend Developer, Frontend Developer, API Development">
     <meta name="author" content="Abdul Karim Taji">
@@ -17,18 +17,18 @@
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="Abdul Karim Taji — Senior Full Stack Developer">
+    <meta property="og:title" content="Abdul Karim Taji | Senior Full Stack Developer">
     <meta property="og:description" content="Senior Full Stack Developer with 7+ years building AI-powered platforms and scalable web systems. Node.js, React, Laravel, TypeScript.">
     <meta property="og:image" content="{{ asset('images/profile.jpg') }}">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1254">
     <meta property="og:image:height" content="1254">
-    <meta property="og:image:alt" content="Abdul Karim Taji — Senior Full Stack Developer">
+    <meta property="og:image:alt" content="Abdul Karim Taji | Senior Full Stack Developer">
     <meta property="og:site_name" content="Abdul Karim Taji Portfolio">
     <meta property="og:locale" content="en_US">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Abdul Karim Taji — Senior Full Stack Developer">
+    <meta name="twitter:title" content="Abdul Karim Taji | Senior Full Stack Developer">
     <meta name="twitter:description" content="Senior Full Stack Developer with 7+ years building AI-powered platforms and scalable web systems. Based in Dubai, UAE.">
     <meta name="twitter:image" content="{{ asset('images/profile.jpg') }}">
     <meta name="twitter:creator" content="@abdulkarimtaji">

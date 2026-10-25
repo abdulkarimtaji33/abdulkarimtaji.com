@@ -1,4 +1,4 @@
-// hero-scene.js — GPU particle field that morphs sphere -> wave -> helix as the hero scrolls.
+// hero-scene.js: GPU particle field that morphs sphere -> wave -> helix as the hero scrolls.
 // One draw call, no post-processing. Loaded lazily by site.js after first paint.
 import * as THREE from './vendor/three.module.min.js';
 import { detectTier } from './lib/perf.js';
