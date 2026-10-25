@@ -55,7 +55,7 @@ class FeaturedProjectsSeeder extends Seeder
                 'name' => 'Pulse Ai',
                 'category' => 'Ai/Analytics',
                 'image' => 'images/projects/pulse.svg',
-                'description' => '"Ask your database": a Claude agent connects to Postgres, MySQL or MongoDB, writes guarded read-only queries and builds live dashboards with KPIs, charts and maps, streamed tile by tile.',
+                'description' => '"Ask your database": an Ai agent connects to Postgres, MySQL or MongoDB, writes guarded read-only queries and builds live dashboards with KPIs, charts and maps, streamed tile by tile.',
             ],
             [
                 'name' => 'Socialposter',
