@@ -86,6 +86,10 @@ class FeaturedProjectsSeeder extends Seeder
         // Only these stay in the pinned showcase; the rest list under "More projects".
         $featured = ['Pulse Ai', 'Lunchbox AI', 'Socialposter', 'Upwork Automation'];
 
+        // Older projects move down to "More projects" too.
+        Project::whereIn('name', ['BBrain', 'UAE Entry Visa', 'Aile Properties', 'Design Iconic'])
+            ->update(['is_featured' => false]);
+
         // "Pulse" was renamed; keep re-runs from creating a duplicate row.
         Project::where('name', 'Pulse')->update(['name' => 'Pulse Ai']);
 
