@@ -31,7 +31,7 @@
                         <span class="slide-n">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}<i>/{{ $total }}</i></span>
                         <span class="tag">{{ $project->category }}</span>
                         <h3>{{ $project->name }}</h3>
-                        <p>{{ $project->description }}</p>
+                        <p data-type>{{ $project->description }}</p>
                         @if($project->url && $project->url !== '#')
                         <a href="{{ $project->url }}" class="link" target="_blank" rel="noopener">View project <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
                         @elseif($project->url === '#')

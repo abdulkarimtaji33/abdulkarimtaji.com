@@ -200,20 +200,28 @@ h1, h2, h3, p, figure { margin: 0; }
 /* Stacking cards: normal downward scroll; each card slides up and settles on top of the last. */
 .stack { max-width: 1280px; margin: 0 auto; padding: 0 var(--gutter); display: grid; gap: 28px; }
 .stack-rail { display: none; }
-.stack-item { position: sticky; top: calc(84px + var(--i) * 12px); padding-bottom: 24px; }
+/* --hold = how long (in scroll) a card stays on screen before the next one arrives */
+.stack { --hold: 62svh; }
+.stack-item { position: sticky; top: calc(84px + var(--i) * 12px); padding-bottom: var(--hold); }
 .stack-item:last-child { padding-bottom: 0; }
 .slide { display: flex; flex-direction: column; border-radius: 28px; border: 1px solid var(--line); background: #0d0d15; overflow: hidden; box-shadow: 0 -18px 50px -20px rgba(0, 0, 0, .8); transform-origin: top center; will-change: transform; }
 .slide-media { aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg-2); flex: none; }
 @media (min-width: 900px) {
   .stack { grid-template-columns: 170px 1fr; gap: clamp(24px, 3vw, 48px); align-items: start; }
   .stack-rail { display: block; position: sticky; top: 120px; }
-  .stack-item { top: calc(96px + var(--i) * 16px); padding-bottom: 36px; }
+  .stack { --hold: 78svh; }
+  .stack-item { top: calc(96px + var(--i) * 16px); }
   .slide { flex-direction: row; height: min(520px, 70svh); }
   .slide-media { aspect-ratio: auto; width: 52%; height: 100%; }
   .slide-body { flex: 1; align-content: center; overflow: hidden; }
 }
 /* very short screens (phones in landscape): plain list, no stacking */
 @media (max-height: 560px) { .stack-item { position: relative; top: auto; } .slide { height: auto; } }
+/* scroll-typed description */
+.t-off { color: transparent; }
+.caret { display: inline-block; width: 2px; height: 1.05em; margin: 0 1px; vertical-align: -.15em; background: var(--cyan); opacity: 0; animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { visibility: hidden; } }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .rail-count { font: 700 clamp(2.4rem, 3vw, 3.2rem)/1 var(--font-display); letter-spacing: -.04em; display: flex; align-items: baseline; gap: 4px; }
 .rail-count b { font-weight: 700; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .rail-count span { font: 500 .9rem var(--font-mono); color: var(--muted); }

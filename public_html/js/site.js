@@ -218,13 +218,43 @@ if (gsap && ScrollTrigger && !reduce) {
         items.forEach((it, i) => {
             const next = items[i + 1];
             if (!next) return;
-            gsap.to($('.slide', it), {
-                scale: 0.93, filter: 'brightness(.5)', ease: 'none',
+            gsap.fromTo($('.slide', it), { scale: 1, filter: 'brightness(1)' }, {
+                scale: 0.95, filter: 'brightness(.82)', ease: 'none',
                 scrollTrigger: {
                     trigger: next, start: 'top bottom-=80',
                     end: () => 'top ' + (stuck() ? topOf(next) + 'px' : '-100%'),
                     scrub: true, invalidateOnRefresh: true,
                 },
+            });
+        });
+    }
+
+    // description "types" itself as you scroll, finishing before the next card slides in
+    if (gsap && ScrollTrigger && !reduce) {
+        items.forEach((it) => {
+            const p = $('p[data-type]', it);
+            if (!p) return;
+            const full = p.textContent.trim();
+            p.innerHTML = '<span class="sr-only"></span><span aria-hidden="true"><span class="t-on"></span><i class="caret"></i><span class="t-off"></span></span>';
+            p.firstChild.textContent = full;
+            const on = $('.t-on', p), off = $('.t-off', p), caret = $('.caret', p);
+            const set = (n) => {
+                on.textContent = full.slice(0, n);
+                off.textContent = full.slice(n);
+                caret.style.opacity = n > 0 && n < full.length ? 1 : 0;
+            };
+            set(0);
+            ScrollTrigger.create({
+                trigger: it,
+                start: 'top 62%',
+                end: () => {
+                    const hold = parseFloat(getComputedStyle(it).paddingBottom) || 0;
+                    const reach = window.innerHeight * 0.62 - (stuck() ? topOf(it) : 0);
+                    return '+=' + Math.max(220, reach + hold * 0.5);
+                },
+                scrub: 0.3,
+                invalidateOnRefresh: true,
+                onUpdate: (self) => set(Math.round(self.progress * full.length)),
             });
         });
     }
