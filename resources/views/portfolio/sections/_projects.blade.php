@@ -18,14 +18,14 @@
         <div class="grid" id="projectGrid">
             @foreach($otherProjects as $project)
             <article class="pcard reveal" data-cat="{{ $project->category }}">
-                <div class="pcard-media"><img src="{{ $project->image }}" alt="{{ $project->name }}" loading="lazy" width="480" height="300"></div>
+                <div class="pcard-media"><img src="{{ $project->image_url }}" alt="{{ $project->name }}" loading="lazy" width="480" height="300"></div>
                 <div class="pcard-body">
                     <span class="tag">{{ $project->category }}</span>
                     <h3>{{ $project->name }}</h3>
                     <p>{{ $project->description }}</p>
                     @if($project->url && $project->url !== '#')
                     <a href="{{ $project->url }}" class="link" target="_blank" rel="noopener">Visit site <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
-                    @else
+                    @elseif($project->url === '#')
                     <span class="muted"><i class="fas fa-mobile-screen" aria-hidden="true"></i> Contact for demo</span>
                     @endif
                 </div>

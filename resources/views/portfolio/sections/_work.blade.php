@@ -13,7 +13,7 @@
             @foreach($featuredProjects as $i => $project)
             <article class="slide">
                 <div class="slide-media">
-                    <img src="{{ $project->image }}" alt="{{ $project->name }}" loading="lazy" width="960" height="540">
+                    <img src="{{ $project->image_url }}" alt="{{ $project->name }}" loading="lazy" width="960" height="540">
                 </div>
                 <div class="slide-body">
                     <span class="slide-n">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}<i>/{{ str_pad($featuredProjects->count(), 2, '0', STR_PAD_LEFT) }}</i></span>
@@ -22,7 +22,7 @@
                     <p>{{ $project->description }}</p>
                     @if($project->url && $project->url !== '#')
                     <a href="{{ $project->url }}" class="link" target="_blank" rel="noopener">View project <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
-                    @else
+                    @elseif($project->url === '#')
                     <span class="muted"><i class="fas fa-mobile-screen" aria-hidden="true"></i> Mobile app, demo on request</span>
                     @endif
                 </div>
