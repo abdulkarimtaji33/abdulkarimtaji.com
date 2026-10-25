@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Project;
-use App\Models\Setting;
 
 class PortfolioController extends Controller
 {
@@ -12,33 +10,28 @@ class PortfolioController extends Controller
     {
         $featuredProjects = Project::where('is_featured', true)->get();
         $otherProjects = Project::where('is_featured', false)->get();
+        $categories = $otherProjects->pluck('category')->filter()->unique()->values();
 
-        // Get theme settings
-        $themeColor = Setting::get('theme_color', 'purple');
-        $themes = json_decode(Setting::get('themes', '{}'), true);
-        $currentTheme = $themes[$themeColor] ?? $themes['purple'];
-
-        $gameData = $this->buildGameData($featuredProjects, $otherProjects);
-
-        return view('portfolio.index', compact('featuredProjects', 'otherProjects', 'currentTheme', 'themeColor', 'gameData'));
+        return view('portfolio.index', [
+            'featuredProjects' => $featuredProjects,
+            'otherProjects' => $otherProjects,
+            'categories' => $categories,
+            'profile' => config('portfolio.profile'),
+            'stats' => config('portfolio.stats'),
+            'skillGroups' => config('portfolio.skill_groups'),
+            'skills' => collect(config('portfolio.skills'))->groupBy('group'),
+            'companies' => config('portfolio.companies'),
+            'marquee' => config('portfolio.marquee'),
+        ]);
     }
 
-    protected function buildGameData($featuredProjects, $otherProjects)
+    public function sitemap()
     {
-        $projects = $featuredProjects->concat($otherProjects)->map(function ($project) {
-            return [
-                'id' => $project->id,
-                'name' => $project->name,
-                'category' => $project->category,
-                'description' => $project->description,
-                'url' => $project->url,
-            ];
-        })->values();
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>'
+            . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>'
+            . e(route('portfolio'))
+            . '</loc><changefreq>monthly</changefreq><priority>1.0</priority></url></urlset>';
 
-        return [
-            'companies' => config('portfolio.companies', []),
-            'skills' => config('portfolio.skills', []),
-            'projects' => $projects,
-        ];
+        return response($xml, 200, ['Content-Type' => 'application/xml']);
     }
 }
